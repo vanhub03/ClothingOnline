@@ -1,0 +1,8 @@
+{
+  "runtimeOptions": {
+    "additionalProbingPaths": [
+      "C:\\Users\\VanhDao\\.dotnet\\store\\|arch|\\|tfm|",
+      "C:\\Users\\VanhDao\\.nuget\\packages"
+    ]
+  }
+}
