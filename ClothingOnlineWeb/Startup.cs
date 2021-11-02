@@ -17,6 +17,10 @@ namespace ClothingOnlineWeb
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            //thiet lap thoi gian ton tai cua session
+            services.AddSession(options => {
+                options.IdleTimeout = TimeSpan.FromMinutes(5);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -28,6 +32,8 @@ namespace ClothingOnlineWeb
             }
 
             app.UseRouting();
+            //kich hoat session, su dung cho website
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {

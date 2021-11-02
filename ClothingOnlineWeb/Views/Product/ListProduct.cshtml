@@ -1,0 +1,7 @@
+﻿@model ClothingOnlineWeb.Models.Account
+@{ 
+    var account = TempData["user"] as Account;
+}
+
+<h2>Welcome @account.Username</h2>
+<h2>Product List</h2>
