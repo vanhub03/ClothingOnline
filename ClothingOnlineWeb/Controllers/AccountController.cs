@@ -14,7 +14,14 @@ namespace ClothingOnlineWeb.Controllers
         ProjectPRN211Context context = new ProjectPRN211Context();
         public IActionResult Index()
         {
-            return RedirectToAction("Login");
+            if (HttpContext.Session.GetString("accountSession") != null)
+            {
+                return RedirectToAction("listproduct", "product");
+            }
+            else
+            {
+                return RedirectToAction("Login");
+            }
         }
 
         [HttpGet]
@@ -27,24 +34,59 @@ namespace ClothingOnlineWeb.Controllers
         public IActionResult Login(Account account)
         {
             //so sanh Account voi du lieu tu database duoc submit
-            var accounts = context.Accounts;
-            foreach (var c in accounts)
+            var accounts = context.Accounts.SingleOrDefault(x => x.Username == account.Username && x.Password == account.Password);
+
+            if (accounts != null)
             {
-                if (ModelState.IsValid && account.Username == c.Username && account.Password == c.Password)
+                //tao session
+                HttpContext.Session.SetString("accountSession", JsonConvert.SerializeObject(accounts));
+                if (accounts.Isadmin == true)
                 {
-                    //tao session
-                    HttpContext.Session.SetString("accountSession", JsonConvert.SerializeObject(account));
-                    if (c.Isadmin == true)
-                    {
-                        return null;
-                    }
-                    else
-                    {
-                        return RedirectToAction("ListProduct", "Product");
-                    }
+                    return RedirectToAction("ListProduct", "Product");
+                }
+                else
+                {
+                    return RedirectToAction("ListProduct", "Product");
                 }
             }
+            else
+            {
+                return View(account);
+            }
+        }
+
+        [HttpGet]
+        public IActionResult Register()
+        {
+            Account account = new Account();
             return View(account);
+        }
+
+        [HttpPost]
+        public IActionResult Register(Account account)
+        {
+            var accounts = context.Accounts.ToList();
+            //check exist
+            foreach(var c in accounts)
+            {
+                if(ModelState.IsValid && account.Username == c.Username)
+                {
+                    TempData["status"] = "Username đã tồn tại!";
+                    return View(account);
+                }
+            }
+            account.Isadmin = false;
+            context.Accounts.Add(account);
+            context.SaveChanges();
+            HttpContext.Session.SetString("accountSession", JsonConvert.SerializeObject(account));
+
+            return RedirectToAction("ListProduct", "Product");
+        }
+
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Remove("accountSession");
+            return RedirectToAction("Login");
         }
     }
 }

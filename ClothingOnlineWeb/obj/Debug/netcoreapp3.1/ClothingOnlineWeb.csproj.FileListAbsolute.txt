@@ -177,3 +177,4 @@ C:\Users\VanhDao\Desktop\Prn211\ClothingOnline\ClothingOnlineWeb\obj\Debug\netco
 C:\Users\VanhDao\Desktop\Prn211\ClothingOnline\ClothingOnlineWeb\obj\Debug\netcoreapp3.1\Razor\Views\_ViewStart.cshtml.g.cs
 C:\Users\VanhDao\Desktop\Prn211\ClothingOnline\ClothingOnlineWeb\obj\Debug\netcoreapp3.1\Razor\Views\Account\Login.cshtml.g.cs
 C:\Users\VanhDao\Desktop\Prn211\ClothingOnline\ClothingOnlineWeb\obj\Debug\netcoreapp3.1\Razor\Views\_ViewImports.cshtml.g.cs
+C:\Users\VanhDao\Desktop\Prn211\ClothingOnline\ClothingOnlineWeb\obj\Debug\netcoreapp3.1\Razor\Views\Account\Register.cshtml.g.cs

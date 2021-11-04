@@ -11,13 +11,23 @@ namespace ClothingOnlineWeb.Controllers
 {
     public class ProductController : Controller
     {
+        ProjectPRN211Context context = new ProjectPRN211Context();
         public IActionResult ListProduct()
         {
-            if (HttpContext.Session.GetString("accountSession") != null)
+            if(HttpContext.Session.GetString("accountSession") != null)
             {
-                TempData["user"] = JsonConvert.DeserializeObject<Account>(HttpContext.Session.GetString("accountSession"));
+                TempData["account"] = JsonConvert.DeserializeObject<Account>(HttpContext.Session.GetString("accountSession"));
             }
-            return View();
+            var products = context.Products.Where(p => p.Enable == true).ToList();
+            foreach(var p in products)
+            {
+                var images = context.Images.Where(i => i.Productid == p.Productid).ToList();
+                foreach(var i in images)
+                {
+                    p.Images.Add(i);
+                }
+            }
+            return View(products);
         }
     }
 }
