@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\VanhDao\\Desktop\\Prn211\\ClothingOnline\\ClothingOnlineWeb\\ClothingOnlineWeb.csproj": {}
+    "C:\\Users\\Admin\\OneDrive\\Desktop\\PRN211\\Project\\ClothingOnline\\ClothingOnlineWeb\\ClothingOnlineWeb.csproj": {}
   },
   "projects": {
-    "C:\\Users\\VanhDao\\Desktop\\Prn211\\ClothingOnline\\ClothingOnlineWeb\\ClothingOnlineWeb.csproj": {
+    "C:\\Users\\Admin\\OneDrive\\Desktop\\PRN211\\Project\\ClothingOnline\\ClothingOnlineWeb\\ClothingOnlineWeb.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\VanhDao\\Desktop\\Prn211\\ClothingOnline\\ClothingOnlineWeb\\ClothingOnlineWeb.csproj",
+        "projectUniqueName": "C:\\Users\\Admin\\OneDrive\\Desktop\\PRN211\\Project\\ClothingOnline\\ClothingOnlineWeb\\ClothingOnlineWeb.csproj",
         "projectName": "ClothingOnlineWeb",
-        "projectPath": "C:\\Users\\VanhDao\\Desktop\\Prn211\\ClothingOnline\\ClothingOnlineWeb\\ClothingOnlineWeb.csproj",
-        "packagesPath": "C:\\Users\\VanhDao\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\VanhDao\\Desktop\\Prn211\\ClothingOnline\\ClothingOnlineWeb\\obj\\",
+        "projectPath": "C:\\Users\\Admin\\OneDrive\\Desktop\\PRN211\\Project\\ClothingOnline\\ClothingOnlineWeb\\ClothingOnlineWeb.csproj",
+        "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Admin\\OneDrive\\Desktop\\PRN211\\Project\\ClothingOnline\\ClothingOnlineWeb\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\VanhDao\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
