@@ -29,5 +29,9 @@ namespace ClothingOnlineWeb.Controllers
             }
             return View(products);
         }
+        public IActionResult getProductDetail(int id)
+        {
+
+        }
     }
 }
