@@ -31,7 +31,7 @@ namespace ClothingOnlineWeb.Controllers
         }
         public IActionResult getProductDetail(int id)
         {
-
+            aaaa
         }
     }
 }
