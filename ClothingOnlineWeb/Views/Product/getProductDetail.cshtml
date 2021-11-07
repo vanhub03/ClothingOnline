@@ -1,0 +1,12 @@
+﻿@model Product
+
+@{ 
+    foreach(var item in Model.Images)
+            {
+                <img src="~/Images/@item.Imagelink" />
+            }
+}
+    <h1>@Model.Productname</h1>
+    <p>Giá: @Model.Price</p>
+    <p>@Model.Description</p>
+    <p>Số hàng: @Model.Unitinstock</p>

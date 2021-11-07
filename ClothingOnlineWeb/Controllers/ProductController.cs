@@ -31,7 +31,10 @@ namespace ClothingOnlineWeb.Controllers
         }
         public IActionResult getProductDetail(int id)
         {
-
+            var product = context.Products.Find(id);
+            var images = context.Images.Where(i => i.Productid == id).ToList();
+            product.Images = images;
+            return View(product);
         }
     }
 }
