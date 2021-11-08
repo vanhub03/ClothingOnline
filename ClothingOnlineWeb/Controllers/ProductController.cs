@@ -36,6 +36,7 @@ namespace ClothingOnlineWeb.Controllers
             product.Images = images;
             var products = context.Products.Where(c => c.Categoryid == product.Categoryid).ToList();
             return View(product);
+            //a
         }
     }
 }
