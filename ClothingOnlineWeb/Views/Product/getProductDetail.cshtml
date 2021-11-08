@@ -1,8 +1,11 @@
 ﻿@model Product
+@{ 
+    var productRelated = (List<Product>)ViewBag.productRelate;
+}
 
 @{ 
-    foreach(var item in Model.Images)
-            {
+    foreach (var item in Model.Images)
+    {
                 <img src="~/Images/@item.Imagelink" />
             }
 }
@@ -10,3 +13,14 @@
     <p>Giá: @Model.Price</p>
     <p>@Model.Description</p>
     <p>Số hàng: @Model.Unitinstock</p>
+<h2>San pham lien quan</h2>
+
+@{ 
+    foreach(var item in productRelated)
+            {
+        <img src="~/Images/@item.Images.First().Imagelink" />
+        <h2><a href="/product/getproductdetail?id=@item.Productid">@item.Productname</a></h2>
+        <p>Gia: @item.Price</p>
+        
+            }
+}

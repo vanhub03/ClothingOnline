@@ -34,9 +34,52 @@ namespace ClothingOnlineWeb.Controllers
             var product = context.Products.Find(id);
             var images = context.Images.Where(i => i.Productid == id).ToList();
             product.Images = images;
-            var products = context.Products.Where(c => c.Categoryid == product.Categoryid).ToList();
+            var products = context.Products.Where(c => c.Productid != product.Productid && c.Categoryid == product.Categoryid).ToList();
+            foreach (var p in products)
+            {
+                var imageRelated = context.Images.FirstOrDefault(i => i.Productid == p.Productid);
+                p.Images.Add(imageRelated);
+            }
+            ViewBag.productRelate = products;
             return View(product);
-            //a
+        }
+        [HttpGet]
+        public IActionResult addToCart(int productId)
+        {
+            if(HttpContext.Session.GetString("cart") == null)
+            {
+                List<Cart> cart = new List<Cart>();
+                var product = context.Products.Find(productId);
+                var images = context.Images.Where(i => i.Productid == product.Productid).ToList();
+                product.Images = images;
+                cart.Add(new Cart
+                {
+                    productId = product.Productid,
+                    productName = product.Productname,
+                    productImage = product.Images.First().Imagelink,
+                    quantity = 1,
+                    price = float.Parse(product.Price)
+                });
+                HttpContext.Session.SetString("cart", JsonConvert.SerializeObject(cart));
+            }
+            else
+            {
+                List<Cart> cart = JsonConvert.DeserializeObject<List<Cart>>(HttpContext.Session.GetString("cart"));
+                var product = context.Products.Find(productId);
+                var images = context.Images.Where(i => i.Productid == product.Productid).ToList();
+                product.Images = images;
+                cart.Add(new Cart
+                {
+                    productId = product.Productid,
+                    productName = product.Productname,
+                    productImage = product.Images.First().Imagelink,
+                    quantity = 1,
+                    price = float.Parse(product.Price)
+                });
+                HttpContext.Session.SetString("cart", JsonConvert.SerializeObject(cart));
+            }
+            
+            return Redirect("listproduct");
         }
     }
 }
