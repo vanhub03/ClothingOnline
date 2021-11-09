@@ -19,6 +19,7 @@ namespace ClothingOnlineWeb
             services.AddControllersWithViews();
             //thiet lap thoi gian ton tai cua session
             services.AddDistributedMemoryCache();
+            services.AddHttpContextAccessor();
             services.AddSession(options => {
                 options.IdleTimeout = TimeSpan.FromMinutes(5);
             });

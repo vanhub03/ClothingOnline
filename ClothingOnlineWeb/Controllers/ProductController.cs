@@ -11,6 +11,7 @@ namespace ClothingOnlineWeb.Controllers
 {
     public class ProductController : Controller
     {
+        public const string CARTKEY = "cart";
         ProjectPRN211Context context = new ProjectPRN211Context();
         public IActionResult ListProduct()
         {
@@ -43,43 +44,50 @@ namespace ClothingOnlineWeb.Controllers
             ViewBag.productRelate = products;
             return View(product);
         }
-        [HttpGet]
+        //lay cart tu session
+        List<Cart> GetCarts()
+        {
+            var session = HttpContext.Session;
+            string jsoncart = session.GetString(CARTKEY);
+            if(jsoncart != null)
+            {
+                return JsonConvert.DeserializeObject<List<Cart>>(jsoncart);
+            }
+            return new List<Cart>();
+        }
+        //xoa cart khoi session
+        void ClearCart()
+        {
+            var session = HttpContext.Session;
+            session.Remove(CARTKEY);
+        }
+        //luu danh sach cart vao session
+        void saveCartSession(List<Cart> listCart)
+        {
+            var session = HttpContext.Session;
+            string jsoncart = JsonConvert.SerializeObject(listCart);
+            session.SetString(CARTKEY, jsoncart);
+        }
         public IActionResult addToCart(int productId)
         {
-            if(HttpContext.Session.GetString("cart") == null)
+            var product = context.Products.Where(p => p.Productid == productId).FirstOrDefault();
+            if(product == null)
             {
-                List<Cart> cart = new List<Cart>();
-                var product = context.Products.Find(productId);
-                var images = context.Images.Where(i => i.Productid == product.Productid).ToList();
-                product.Images = images;
-                cart.Add(new Cart
-                {
-                    productId = product.Productid,
-                    productName = product.Productname,
-                    productImage = product.Images.First().Imagelink,
-                    quantity = 1,
-                    price = float.Parse(product.Price)
-                });
-                HttpContext.Session.SetString("cart", JsonConvert.SerializeObject(cart));
+                return NotFound("Gio hang trong");
+            }
+            var cart = GetCarts();
+            var cartitem = cart.Find(p => p.product.Productid == productId);
+            if(cartitem != null)
+            {
+                cartitem.quantity++;
             }
             else
             {
-                List<Cart> cart = JsonConvert.DeserializeObject<List<Cart>>(HttpContext.Session.GetString("cart"));
-                var product = context.Products.Find(productId);
-                var images = context.Images.Where(i => i.Productid == product.Productid).ToList();
-                product.Images = images;
-                cart.Add(new Cart
-                {
-                    productId = product.Productid,
-                    productName = product.Productname,
-                    productImage = product.Images.First().Imagelink,
-                    quantity = 1,
-                    price = float.Parse(product.Price)
-                });
-                HttpContext.Session.SetString("cart", JsonConvert.SerializeObject(cart));
+                cart.Add(new Cart() { quantity = 1, product = product });
             }
-            
-            return Redirect("listproduct");
+
+            saveCartSession(cart);
+            return RedirectToAction("listproduct");
         }
     }
 }
