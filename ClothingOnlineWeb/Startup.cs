@@ -18,6 +18,8 @@ namespace ClothingOnlineWeb
         {
             services.AddControllersWithViews();
             //thiet lap thoi gian ton tai cua session
+            services.AddDistributedMemoryCache();
+            services.AddHttpContextAccessor();
             services.AddSession(options => {
                 options.IdleTimeout = TimeSpan.FromMinutes(5);
             });
@@ -39,7 +41,7 @@ namespace ClothingOnlineWeb
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}"
+                    pattern: "{controller=product}/{action=listproduct}/{id?}"
                     );
             });
         }
