@@ -1,0 +1,20 @@
+﻿@using Microsoft.AspNetCore.Http
+@using Newtonsoft.Json
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    ProjectPRN211Context context = new ProjectPRN211Context();
+    var categories = context.Categories.ToList();
+}
+<li class="nav-item dropdown">
+    <span class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        Thể loại
+    </span>
+    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+        @{
+            foreach (var item in categories)
+            {
+                <li><a class="dropdown-item" href="#">@item.Categoryname</a></li>
+            }
+        }
+    </ul>
+</li>

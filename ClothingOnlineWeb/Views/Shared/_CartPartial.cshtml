@@ -19,7 +19,7 @@
                         {
                             var price = item.quantity * float.Parse(item.product.Price);
                             total += price;
-                            <li><a class="dropdown-item" href="#">@item.product.Productname (@item.quantity)</a></li>
+                            <li><a class="dropdown-item" href="/product/getproductdetail?id=@item.product.Productid">@item.product.Productname (@item.quantity)</a></li>
                         }
                         <li><a class="dropdown-item" href="#">Thanh tien: @total</a></li>
                     }

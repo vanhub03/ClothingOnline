@@ -41,7 +41,7 @@ namespace ClothingOnlineWeb
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}"
+                    pattern: "{controller=product}/{action=listproduct}/{id?}"
                     );
             });
         }

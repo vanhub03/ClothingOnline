@@ -29,18 +29,8 @@
                         <li class="nav-item">
                             <a class="nav-link" href="#">Hàng mới về</a>
                         </li>
-                        <li class="nav-item dropdown">
-                            <span class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Thể loại
-                            </span>
 
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="#">Employee1</a></li>
-                                <li><a class="dropdown-item" href="#">Employee2</a></li>
-                                <li><a class="dropdown-item" href="#">Employee3</a></li>
-                            </ul>
-                        </li>
-
+                        @await Html.PartialAsync("_CategoryPartial")
                         @await Html.PartialAsync("_CartPartial")
                         @{
                             if (TempData["account"] != null)
