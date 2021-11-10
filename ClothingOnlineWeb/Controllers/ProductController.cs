@@ -140,7 +140,7 @@ namespace ClothingOnlineWeb.Controllers
                     p.Images.Add(i);
                 }
             }
-            products.Reverse();
+            products.Sort((x, y) => y.CreatedDate.CompareTo(x.CreatedDate));
             return View(products);
         }
     }
