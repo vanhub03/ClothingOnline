@@ -1,8 +1,9 @@
 ﻿using System;
+using System.IO;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Configuration;
-using System.IO;
+
 #nullable disable
 
 namespace ClothingOnlineWeb.Models
@@ -27,11 +28,13 @@ namespace ClothingOnlineWeb.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var builder = new ConfigurationBuilder()
-                            .SetBasePath(Directory.GetCurrentDirectory())
-                            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-            IConfigurationRoot configuration = builder.Build();
-            optionsBuilder.UseSqlServer(configuration.GetConnectionString("MyProjectDB"));
+            if (!optionsBuilder.IsConfigured)
+            {
+                var builder = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                IConfiguration configuration = builder.Build();
+                optionsBuilder.UseSqlServer(configuration.GetConnectionString("MyProjectDB"));
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -47,9 +50,12 @@ namespace ClothingOnlineWeb.Models
 
                 entity.Property(e => e.Userid).HasColumnName("userid");
 
-                entity.Property(e => e.Address).HasColumnName("address");
+                entity.Property(e => e.Address)
+                    .IsRequired()
+                    .HasColumnName("address");
 
                 entity.Property(e => e.Email)
+                    .IsRequired()
                     .HasMaxLength(50)
                     .HasColumnName("email");
 
@@ -61,6 +67,7 @@ namespace ClothingOnlineWeb.Models
                     .HasColumnName("password");
 
                 entity.Property(e => e.Phone)
+                    .IsRequired()
                     .HasMaxLength(50)
                     .HasColumnName("phone");
 
@@ -86,9 +93,7 @@ namespace ClothingOnlineWeb.Models
             {
                 entity.ToTable("image");
 
-                entity.Property(e => e.Imageid)
-                    .ValueGeneratedNever()
-                    .HasColumnName("imageid");
+                entity.Property(e => e.Imageid).HasColumnName("imageid");
 
                 entity.Property(e => e.Imagelink)
                     .IsRequired()
@@ -156,10 +161,7 @@ namespace ClothingOnlineWeb.Models
 
                 entity.Property(e => e.Enable).HasColumnName("enable");
 
-                entity.Property(e => e.Price)
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .HasColumnName("price");
+                entity.Property(e => e.Price).HasColumnName("price");
 
                 entity.Property(e => e.Productname)
                     .IsRequired()

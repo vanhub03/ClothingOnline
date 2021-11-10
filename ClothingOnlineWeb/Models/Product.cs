@@ -15,7 +15,7 @@ namespace ClothingOnlineWeb.Models
 
         public int Productid { get; set; }
         public string Productname { get; set; }
-        public string Price { get; set; }
+        public double Price { get; set; }
         public string Description { get; set; }
         public int Unitinstock { get; set; }
         public bool Enable { get; set; }
