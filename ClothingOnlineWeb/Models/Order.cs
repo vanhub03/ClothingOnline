@@ -14,6 +14,7 @@ namespace ClothingOnlineWeb.Models
         public string Phone { get; set; }
         public string Address { get; set; }
         public string Totalprice { get; set; }
+        public int Status { get; set; }
 
         public virtual Account Account { get; set; }
         public virtual Productorder Productorder { get; set; }

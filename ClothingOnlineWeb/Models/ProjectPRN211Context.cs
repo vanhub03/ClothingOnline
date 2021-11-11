@@ -130,6 +130,8 @@ namespace ClothingOnlineWeb.Models
 
                 entity.Property(e => e.Productorderid).HasColumnName("productorderid");
 
+                entity.Property(e => e.Status).HasColumnName("status");
+
                 entity.Property(e => e.Totalprice)
                     .IsRequired()
                     .HasColumnName("totalprice");
@@ -156,7 +158,7 @@ namespace ClothingOnlineWeb.Models
                 entity.Property(e => e.Categoryid).HasColumnName("categoryid");
 
                 entity.Property(e => e.CreatedDate)
-                    .HasColumnType("date")
+                    .HasColumnType("datetime")
                     .HasColumnName("createdDate");
 
                 entity.Property(e => e.Description).HasColumnName("description");
