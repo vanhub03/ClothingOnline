@@ -20,7 +20,6 @@ namespace ClothingOnlineWeb.Models
         public int Unitinstock { get; set; }
         public bool Enable { get; set; }
         public int Categoryid { get; set; }
-        public DateTime CreatedDate { get; set; }
 
         public virtual Category Category { get; set; }
         public virtual ICollection<Image> Images { get; set; }

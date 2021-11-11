@@ -28,11 +28,13 @@ namespace ClothingOnlineWeb.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var builder = new ConfigurationBuilder()
-                            .SetBasePath(Directory.GetCurrentDirectory())
-                            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-            IConfigurationRoot configuration = builder.Build();
-            optionsBuilder.UseSqlServer(configuration.GetConnectionString("MyProjectDB"));
+            if (!optionsBuilder.IsConfigured)
+            {
+                var builder = new ConfigurationBuilder()
+               .SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                IConfiguration configuration = builder.Build();
+                optionsBuilder.UseSqlServer(configuration.GetConnectionString("MyProjectDB"));
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -154,10 +156,6 @@ namespace ClothingOnlineWeb.Models
                 entity.Property(e => e.Productid).HasColumnName("productid");
 
                 entity.Property(e => e.Categoryid).HasColumnName("categoryid");
-
-                entity.Property(e => e.CreatedDate)
-                    .HasColumnType("date")
-                    .HasColumnName("createdDate");
 
                 entity.Property(e => e.Description).HasColumnName("description");
 
