@@ -1,7 +1,14 @@
 ﻿@model Product
-@{ 
+@using Microsoft.AspNetCore.Http
+@using Newtonsoft.Json
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
     var productRelated = (List<Product>)ViewBag.productRelate;
+    var session = HttpContextAccessor.HttpContext.Session;
+    string jsoncart = session.GetString("accountSession");
 }
+
 
 <head>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" />
@@ -63,7 +70,14 @@
             </p>
             <hr />
             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="/product/addtocart?productId=@Model.Productid">Add to cart</a></div>
+                @if (jsoncart != null)
+                {
+                    <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="/product/addtocart?productId=@Model.Productid">Add to cart</a></div>
+                }
+                else
+                {
+                    <div class="text-center">Login to add to cart</div>
+                }
             </div>
         </div>
     </div>
@@ -71,7 +85,7 @@
     <h2>San pham lien quan</h2>
 
     <div class="px-4 px-lg-5 mt-5 row gx-4 gx-lg-5 row-cols-xl-5 justify-content-center">
-        @{ 
+        @{
             foreach (var item in productRelated)
             {
                 <div class="col mb-5">
@@ -81,7 +95,7 @@
                             <div class="text-center">
                                 <h5 class="fw-bolder">
                                     <a href="/product/getproductdetail?id=@item.Productid">
-                                    @item.Productname
+                                        @item.Productname
                                     </a>
                                 </h5>
                                 <strong class="price">@item.Price VND</strong>
