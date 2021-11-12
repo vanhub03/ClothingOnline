@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Http;
 using ClothingOnlineWeb.Models;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace ClothingOnlineWeb.Controllers
 {
@@ -35,7 +36,7 @@ namespace ClothingOnlineWeb.Controllers
             var product = context.Products.Find(id);
             var images = context.Images.Where(i => i.Productid == id).ToList();
             product.Images = images;
-            var products = context.Products.Where(c => c.Productid != product.Productid && c.Categoryid == product.Categoryid).ToList();
+            var products = context.Products.Where(c => c.Productid != product.Productid && c.Price > product.Price - 100000 && c.Price < product.Price + 100000).ToList();
             foreach (var p in products)
             {
                 var imageRelated = context.Images.FirstOrDefault(i => i.Productid == p.Productid);
@@ -88,6 +89,23 @@ namespace ClothingOnlineWeb.Controllers
 
             saveCartSession(cart);
             return RedirectToAction("listproduct");
+        }
+
+        public IActionResult RemoveItemInCart(int productId)
+        {
+            var cart = GetCarts();
+            var cartItem = cart.Find(c => c.product.Productid == productId);
+            if(cartItem != null)
+            {
+                cart.Remove(cartItem);
+            }
+            saveCartSession(cart);
+            return RedirectToAction("ViewCart");
+        }
+
+        public IActionResult ViewCart()
+        {
+            return View(GetCarts());
         }
 
         public IActionResult getProductByCategory(int id)

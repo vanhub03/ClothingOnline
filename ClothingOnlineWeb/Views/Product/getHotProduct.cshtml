@@ -1,4 +1,12 @@
 ﻿@model List<Product>
+@using Microsoft.AspNetCore.Http
+@using Newtonsoft.Json
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    var session = HttpContextAccessor.HttpContext.Session;
+    string jsoncart = session.GetString("accountSession");
+}
 <head>
     <link id="u-theme-google-font" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i|Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" />
@@ -10,10 +18,11 @@
             <div class="card" style="width: 18rem;">
                 <ul class="list-group list-group-flush">
                     @{ ProjectPRN211Context context = new ProjectPRN211Context();
-                                    var categories = context.Categories.ToList();
-                                    foreach (var item in categories)
-                                    {
-                        <li class="list-group-item"><a class="dropdown-item" href="/product/getProductByCategory?id=@item.Categoryid">@item.Categoryname</a></li> } }
+                        var categories = context.Categories.ToList();
+                        foreach (var item in categories)
+                        {
+                            <li class="list-group-item"><a class="dropdown-item" href="/product/getProductByCategory?id=@item.Categoryid">@item.Categoryname</a></li>
+ } }
                 </ul>
             </div>
         </div>
@@ -34,7 +43,14 @@
                                 </div>
                             </div>
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="/product/addtocart?productId=@p.Productid">Add to cart</a></div>
+                                @if (jsoncart != null)
+                                {
+                                    <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="/product/addtocart?productId=@p.Productid">Add to cart</a></div>
+                                }
+                                else
+                                {
+                                    <div class="text-center">Login to add to cart</div>
+                                }
                             </div>
                         </div>
                     </div>
