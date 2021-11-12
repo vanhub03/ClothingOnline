@@ -42,7 +42,7 @@ namespace ClothingOnlineWeb.Controllers
                 HttpContext.Session.SetString("accountSession", JsonConvert.SerializeObject(accounts));
                 if (accounts.Isadmin == true)
                 {
-                    return RedirectToAction("ListProduct", "Product");
+                    return RedirectToAction("Index", "Admin");
                 }
                 else
                 {

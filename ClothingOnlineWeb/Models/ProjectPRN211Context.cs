@@ -23,8 +23,8 @@ namespace ClothingOnlineWeb.Models
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Image> Images { get; set; }
         public virtual DbSet<Order> Orders { get; set; }
+        public virtual DbSet<OrderDetail> OrderDetails { get; set; }
         public virtual DbSet<Product> Products { get; set; }
-        public virtual DbSet<Productorder> Productorders { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -118,6 +118,10 @@ namespace ClothingOnlineWeb.Models
                     .IsRequired()
                     .HasColumnName("address");
 
+                entity.Property(e => e.CreatedDate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("createdDate");
+
                 entity.Property(e => e.Customername)
                     .IsRequired()
                     .HasMaxLength(50)
@@ -127,8 +131,6 @@ namespace ClothingOnlineWeb.Models
                     .IsRequired()
                     .HasMaxLength(50)
                     .HasColumnName("phone");
-
-                entity.Property(e => e.Productorderid).HasColumnName("productorderid");
 
                 entity.Property(e => e.Status).HasColumnName("status");
 
@@ -141,12 +143,31 @@ namespace ClothingOnlineWeb.Models
                     .HasForeignKey(d => d.Accountid)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_order_Account");
+            });
 
-                entity.HasOne(d => d.Productorder)
-                    .WithMany(p => p.Orders)
-                    .HasForeignKey(d => d.Productorderid)
+            modelBuilder.Entity<OrderDetail>(entity =>
+            {
+                entity.ToTable("OrderDetail");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Productid).HasColumnName("productid");
+
+                entity.Property(e => e.Quantity).HasColumnName("quantity");
+
+                entity.Property(e => e.UnitPrice).HasColumnName("unitPrice");
+
+                entity.HasOne(d => d.Order)
+                    .WithMany(p => p.OrderDetails)
+                    .HasForeignKey(d => d.OrderId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_order_productorder");
+                    .HasConstraintName("FK_OrderDetail_order");
+
+                entity.HasOne(d => d.Product)
+                    .WithMany(p => p.OrderDetails)
+                    .HasForeignKey(d => d.Productid)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_OrderDetail_Product");
             });
 
             modelBuilder.Entity<Product>(entity =>
@@ -179,23 +200,6 @@ namespace ClothingOnlineWeb.Models
                     .HasForeignKey(d => d.Categoryid)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Product_category");
-            });
-
-            modelBuilder.Entity<Productorder>(entity =>
-            {
-                entity.ToTable("productorder");
-
-                entity.Property(e => e.Productorderid).HasColumnName("productorderid");
-
-                entity.Property(e => e.Productid).HasColumnName("productid");
-
-                entity.Property(e => e.Quantity).HasColumnName("quantity");
-
-                entity.HasOne(d => d.Product)
-                    .WithMany(p => p.Productorders)
-                    .HasForeignKey(d => d.Productid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_productorder_Product");
             });
 
             OnModelCreatingPartial(modelBuilder);

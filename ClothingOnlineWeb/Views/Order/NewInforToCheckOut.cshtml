@@ -1,0 +1,33 @@
+﻿@model ClothingOnlineWeb.Models.Order
+@using Microsoft.AspNetCore.Http
+@using Newtonsoft.Json
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    var session = HttpContextAccessor.HttpContext.Session;
+    string jsoncart = session.GetString(ClothingOnlineWeb.Controllers.ProductController.CARTKEY);
+    double total = 0;
+    if (jsoncart != null)
+    {
+        var cart = JsonConvert.DeserializeObject<List<Cart>>(jsoncart);
+        foreach (var item in cart)
+        {
+            double price = item.quantity * item.product.Price;
+            total += price;
+        }
+        <form asp-controller="Order" asp-action="addtoorder">
+            <label>Ten nguoi nhan: </label>
+            <input asp-for="Customername" class="form-control" required autofocus />
+            <label>So dien thoai: </label>
+            <input asp-for="Phone" class="form-control" required autofocus />
+            <label>Dia chi: </label>
+            <input asp-for="Address" class="form-control" required autofocus />
+            <label>Tong so tien phai thanh toan: </label>
+            <input asp-for="Totalprice" class="form-control" value="@total" disabled />
+            <input type="submit" class="btn btn-success" value="Order" />
+        </form>
+    }
+    else
+    {
+        <h1>Ban chua co san pham nao trong gio hang</h1>
+    }
+}

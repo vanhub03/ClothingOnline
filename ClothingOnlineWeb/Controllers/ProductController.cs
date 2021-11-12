@@ -16,10 +16,6 @@ namespace ClothingOnlineWeb.Controllers
         ProjectPRN211Context context = new ProjectPRN211Context();
         public IActionResult ListProduct()
         {
-            if(HttpContext.Session.GetString("accountSession") != null)
-            {
-                TempData["account"] = JsonConvert.DeserializeObject<Account>(HttpContext.Session.GetString("accountSession"));
-            }
             var products = context.Products.Where(p => p.Enable == true).ToList();
             foreach(var p in products)
             {
@@ -124,32 +120,32 @@ namespace ClothingOnlineWeb.Controllers
 
         public IActionResult getHotProduct()
         {
-            var products = context.Products.ToList();
+            var products = context.Products.Where(p => p.Enable == true).ToList();
             List<Product> sortProduct = new List<Product>();
             foreach(var item in products)
             {
-                var productorders = context.Productorders.Where(p => p.Productid == item.Productid).ToList();
+                var orderDetails = context.OrderDetails.Where(p => p.Productid == item.Productid).ToList();
                 var images = context.Images.Where(i => i.Productid == item.Productid).ToList();
-                foreach (var p in productorders)
-                {
-                    item.Productorders.Add(p);
-                }
+                
                 foreach(var i in images)
                 {
                     item.Images.Add(i);
                 }
-                if (item.Productorders.Count > 0)
+                foreach(var order in orderDetails)
                 {
-                    sortProduct.Add(item);
+                    if (item.Productid == order.Productid)
+                    {
+                        sortProduct.Add(item);
+                    }
                 }
             }
-            sortProduct.Sort((x, y) => y.Productorders.Count.CompareTo(x.Productorders.Count));
-            return View(sortProduct);
+            List<Product> distinct = sortProduct.Distinct().ToList();
+            return View(distinct);
         }
 
         public IActionResult getNewestProduct()
         {
-            var products = context.Products.ToList();
+            var products = context.Products.Where(p => p.Enable == true).ToList();
             foreach (var p in products)
             {
                 var images = context.Images.Where(i => i.Productid == p.Productid).ToList();

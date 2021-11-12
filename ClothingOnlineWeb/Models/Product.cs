@@ -10,7 +10,7 @@ namespace ClothingOnlineWeb.Models
         public Product()
         {
             Images = new HashSet<Image>();
-            Productorders = new HashSet<Productorder>();
+            OrderDetails = new HashSet<OrderDetail>();
         }
 
         public int Productid { get; set; }
@@ -24,6 +24,6 @@ namespace ClothingOnlineWeb.Models
 
         public virtual Category Category { get; set; }
         public virtual ICollection<Image> Images { get; set; }
-        public virtual ICollection<Productorder> Productorders { get; set; }
+        public virtual ICollection<OrderDetail> OrderDetails { get; set; }
     }
 }

@@ -74,9 +74,13 @@
                 {
                     <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="/product/addtocart?productId=@Model.Productid">Add to cart</a></div>
                 }
+                else if (Model.Enable == false)
+                {
+                <p>Sản phẩm này hiện đã hết hàng. Vui lòng quay lại sau.</p>
+                }
                 else
                 {
-                    <div class="text-center">Login to add to cart</div>
+                <div class="text-center">Login to add to cart</div>
                 }
             </div>
         </div>
