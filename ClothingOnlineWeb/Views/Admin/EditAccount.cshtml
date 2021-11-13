@@ -1,7 +1,9 @@
 ﻿@using ClothingOnlineWeb.Models
 @using Microsoft.AspNetCore.Http
 @using Newtonsoft.Json;
-@model List<Product>
+@model ClothingOnlineWeb.Models.Account
+@{ var status = TempData["status"] as String; }
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -112,71 +114,73 @@
                 </nav>
                 <!-- End of Topbar -->
                 <!-- Begin Page Content -->
-                <div class="container-fluid">
-
-                    <!-- Page Heading -->
-                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Product</h1>
-
-                    </div>
-
-
-                    <!-- DataTales Example -->
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3" style="display: flex; justify-content: space-between;">
-                            <h6 class="m-0 font-weight-bold text-primary">DataTables</h6>
-                            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-                                <i class="fas fa-plus-circle fa-sm text-white-50"></i> Thêm Sản Phẩm
-                            </a>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <thead>
-                                        <tr>
-                                            <th>ProductID</th>
-                                            <th>Product Name</th>
-                                            <th>Price</th>
-                                            <th>Description</th>
-                                            <th>Unitinstock</th>
-                                            <th>Category</th>
-                                            <th>Enable</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-
-                                    <tbody>
-                                        @foreach (var p in Model)
-                                        {
-                                        <tr>
-                                            <td>@p.Productid</td>
-                                            <td>@p.Productname</td>
-                                            <td>@p.Price</td>
-                                            <td>@p.Description</td>
-                                            <td>@p.Unitinstock</td>
-                                            <td>@p.Category.Categoryname</td>
-                                            @if (p.Enable == true)
-                                            {
-                                        <td>Enable</td>
-                                            }
-                                    else
-                                    {
-                                        <td>Disable</td>
-                                        }
-
-                                            <td style="display: flex; justify-content: center">
-                                                <button type="button" class="btn btn-success" style="margin-right:8px">Edit</button>
-                                                <button type="button" class="btn btn-danger">Delete</button>
-                                            </td>
-                                        </tr>
-                                            }
-
-                                    </tbody>
-                                </table>
+                <div class="text-center mt-5 container-fluid">
+                    <form style="margin: auto;" asp-controller="Admin" asp-action="ClickEditAccount" method="post">
+                        <h1 class="h3 mb-3 font-weigh-normal">Edit Account</h1><br />
+                        <div class="row">
+                            <div class="col-2"></div>
+                            <div class="col-8">
+                                <div class="col-7">
+                                    <input type="hidden" asp-for="Userid" placeholder="Username" class="form-control" required autofocus readonly/>                                  
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-3 mt-2">
+                                        User Name:
+                                    </div>
+                                    <div class="col-7">
+                                        <input type="text" asp-for="Username" placeholder="Username" class="form-control" required autofocus readonly />
+                                        <span asp-validation-for="Username"></span>
+                                    </div>
+                                </div>
+                                <!--<div class="row mt-3">
+        <div class="col-3 mt-2">
+            Password:
+        </div>-->
+                                @*<div class="col-7">
+            <input type="password" asp-for="Password" id="Password" placeholder="Password" class="form-control" required autofocus readonly/>
+            <span asp-validation-for="Password"></span>
+        </div>*@
+                                <!--</div>-->
+                                <div class="row mt-3">
+                                    <div class="col-3 mt-2">
+                                        Your Address:
+                                    </div>
+                                    <div class="col-7">
+                                        <input type="text" asp-for="Address" id="Address" placeholder="Address" class="form-control" required autofocus />
+                                        <span asp-validation-for="Address"></span>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-3 mt-2">
+                                        Number Phone:
+                                    </div>
+                                    <div class="col-7">
+                                        <input type="number" asp-for="Phone" id="Phone" placeholder="Phone" class="form-control" required autofocus />
+                                        <span asp-validation-for="Phone"></span>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-3 mt-2">
+                                        Email:
+                                    </div>
+                                    <div class="col-7">
+                                        <input type="email" asp-for="Email" id="Email" placeholder="Email" class="form-control" required autofocus />
+                                        <span asp-validation-for="Email"></span>
+                                    </div>
+                                </div>
                             </div>
+                            <div class="col-2"></div>
                         </div>
-                    </div>
 
+                        @{ if (TempData["status"] != null)
+                            {
+                <div class="alert alert-danger" role="alert">
+                    @status
+                </div> } }
+                        <div class="mt-4" style="justify-content:center; display:flex">
+                            <button class="btn btn-lg btn-primary" style="" type="submit">Edit</button>
+                        </div>
+                    </form>
                 </div>
                 <!-- /.container-fluid -->
 
@@ -186,7 +190,7 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2020</span>
+
                     </div>
                 </div>
             </footer>

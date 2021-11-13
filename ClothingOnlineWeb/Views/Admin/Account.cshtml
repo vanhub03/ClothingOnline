@@ -13,6 +13,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
+  
 
     <title>SB Admin 2 - Tables</title>
 
@@ -39,7 +40,7 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
@@ -51,7 +52,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="index.html">
+                <a class="nav-link" href="index">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span>
                 </a>
@@ -68,7 +69,7 @@
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
 
-                <a class="nav-link active"  asp-controller="Admin" asp-action="Accounts">
+                <a class="nav-link active" asp-controller="Admin" asp-action="Accounts">
                     <i class="fas fa-fw fa-cog"></i>
                     <span>Accounts</span>
                 </a>
@@ -77,7 +78,7 @@
 
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link " href="@Url.Action("Product","Admin")" >
+                <a class="nav-link " href="@Url.Action("Product","Admin")">
                     <i class="fas fa-fw fa-cog"></i>
                     <span>Products</span>
                 </a>
@@ -125,7 +126,7 @@
                     <div class="card shadow mb-4">
                         <div class="card-header py-3" style="display: flex; justify-content: space-between;">
                             <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
-                            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                            <a href="@Url.Action("AddAccount","Admin" )" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
                                 <i class="fas fa-plus-circle fa-sm text-white-50"></i> Add New Account
                             </a>
                         </div>
@@ -137,10 +138,10 @@
                                             <th>ID</th>
                                             <th>UserName</th>
                                             <th>Password</th>
-                                            <th>Address</th>
-                                            <th>Phone</th>
+                                            <th>Địa Chỉ</th>
+                                            <th>Số Điện Thoại</th>
                                             <th>Email</th>
-                                            <th>Role</th>
+                                            <th>Quyền</th>
                                             <th></th>
                                         </tr>
                                     </thead>
@@ -161,12 +162,19 @@
  }
             else
             {
-<td>User</td>
+        <td>User</td>
 }
-                                <td>
-                                    <button type="button" class="btn btn-success">Edit</button>
-                                    <button type="button" class="btn btn-danger">Delete</button>
-                                </td>
+
+
+                            <td style="display: flex; justify-content: center;">
+
+                                <a asp-controller="Admin" asp-action="EditAccount" asp-route-id="@p.Userid">
+                                    <button type="button" class="btn btn-success" style="margin-right:8px">Sửa</button>
+                                </a>
+                                <a href="/Admin/DeleteAccount/@p.Userid" class="delete btn btn-danger"  data-confirm="Bạn có chắc về hành động này chứ?">Cấm</a>
+                              
+
+                            </td>
                             </tr>}
 
                                     </tbody>
@@ -189,6 +197,8 @@
                 </div>
             </footer>
             <!-- End of Footer -->
+          
+
 
         </div>
         <!-- End of Content Wrapper -->
@@ -200,25 +210,7 @@
         <i class="fas fa-angle-up"></i>
     </a>
 
-    <!-- Logout Modal-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
-                </div>
-            </div>
-        </div>
-    </div>
+
 
     <!-- Bootstrap core JavaScript-->
     <script src="~/vendor/jquery/jquery.min.js"></script>
@@ -236,7 +228,22 @@
 
     <!-- Page level custom scripts -->
     <script src="~/js1/datatables-demo.js"></script>
+    <script src="~/js1/JavaScript.js"></script> 
+    <script>
+        var deleteLinks = document.querySelectorAll('.delete');
 
+        for (var i = 0; i < deleteLinks.length; i++) {
+            deleteLinks[i].addEventListener('click', function (event) {
+                event.preventDefault();
+
+                var choice = confirm(this.getAttribute('data-confirm'));
+
+                if (choice) {
+                    window.location.href = this.getAttribute('href');
+                }
+            });
+        }
+    </script>
 </body>
 
 </html>
