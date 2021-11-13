@@ -65,22 +65,26 @@ namespace ClothingOnlineWeb.Controllers
         [HttpPost]
         public IActionResult Register(Account account)
         {
-            var accounts = context.Accounts.ToList();
-            //check exist
-            foreach(var c in accounts)
+            if (ModelState.IsValid)
             {
-                if(ModelState.IsValid && account.Username == c.Username)
+                var accounts = context.Accounts.ToList();
+                //check exist
+                foreach (var c in accounts)
                 {
-                    TempData["status"] = "Username đã tồn tại!";
-                    return View(account);
+                    if (ModelState.IsValid && account.Username == c.Username)
+                    {
+                        TempData["status"] = "Username đã tồn tại!";
+                        return View(account);
+                    }
                 }
-            }
-            account.Isadmin = false;
-            context.Accounts.Add(account);
-            context.SaveChanges();
-            HttpContext.Session.SetString("accountSession", JsonConvert.SerializeObject(account));
+                account.Isadmin = false;
+                context.Accounts.Add(account);
+                context.SaveChanges();
+                HttpContext.Session.SetString("accountSession", JsonConvert.SerializeObject(account));
 
-            return RedirectToAction("ListProduct", "Product");
+                return RedirectToAction("ListProduct", "Product");
+            }
+            return View();
         }
 
         public IActionResult Logout()
