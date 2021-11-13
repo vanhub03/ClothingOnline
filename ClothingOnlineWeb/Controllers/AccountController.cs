@@ -23,6 +23,10 @@ namespace ClothingOnlineWeb.Controllers
                 return RedirectToAction("Login");
             }
         }
+        public IActionResult WasBan()
+        {
+            return View();
+        }
 
         [HttpGet]
         public IActionResult Login()
@@ -43,6 +47,10 @@ namespace ClothingOnlineWeb.Controllers
                 if (accounts.Isadmin == true)
                 {
                     return RedirectToAction("Accounts", "Admin");
+                }else if(accounts.Enable == false)
+                {
+                    HttpContext.Session.Remove("accountSession");
+                    return View("WasBan");
                 }
                 else
                 {
@@ -78,6 +86,7 @@ namespace ClothingOnlineWeb.Controllers
                     }
                 }
                 account.Isadmin = false;
+                account.Enable = true;
                 context.Accounts.Add(account);
                 context.SaveChanges();
                 HttpContext.Session.SetString("accountSession", JsonConvert.SerializeObject(account));
@@ -91,6 +100,44 @@ namespace ClothingOnlineWeb.Controllers
         {
             HttpContext.Session.Remove("accountSession");
             return RedirectToAction("Login");
+        }
+        [HttpGet]
+        public IActionResult UpdateAccount(int id)
+        {
+            Account account = context.Accounts.Find(id);
+            return View(account);
+        }
+        [HttpPost]
+        public IActionResult UpdateAccount(Account account, string newPassword, string rePassword)
+        {
+            if (ModelState.IsValid)
+            {
+                var tempAccount = context.Accounts.Where(t => t.Userid == account.Userid && t.Password == account.Password).FirstOrDefault();
+                if (tempAccount == null)
+                {
+                    TempData["status"] = "Mật khẩu cũ không đúng";
+                    return View(account);
+                }
+                else if(newPassword != rePassword)
+                {
+                    TempData["status"] = "Xác nhận mật khẩu không chính xác";
+                    return View(account);
+                }
+                else
+                {
+                    tempAccount.Password = newPassword;
+                    tempAccount.Address = account.Address;
+                    tempAccount.Phone = account.Phone;
+                    tempAccount.Email = account.Email;
+                    tempAccount.Isadmin = false;
+                    tempAccount.Enable = true;
+                    context.SaveChanges();
+                    HttpContext.Session.SetString("accountSession", JsonConvert.SerializeObject(tempAccount));
+
+                    return RedirectToAction("ListProduct", "Product");
+                }
+            }
+            return View();
         }
     }
 }

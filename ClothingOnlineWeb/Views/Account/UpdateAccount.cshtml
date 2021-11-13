@@ -1,0 +1,88 @@
+﻿@model ClothingOnlineWeb.Models.Account
+@{
+    var status = TempData["status"] as String;
+}
+
+<div class="text-center mt-5 container-fluid">
+    <form style="margin: auto;" asp-controller="Account" asp-action="UpdateAccount" method="post">
+        <h1 class="h3 mb-3 font-weigh-normal">Đổi thông tin</h1><br />
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-8">
+                <div class="row mt-3">
+                    <input type="hidden" asp-for="Userid" id="Userid" class="form-control" value="@Model.Userid" required autofocus/>
+                    <div class="col-7">
+                        <input type="hidden" asp-for="Username" id="Username" value="@Model.Username" class="form-control" required autofocus/>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-3 mt-2">
+                        Mật khẩu cũ:
+                    </div>
+                    <div class="col-7">
+                        <input type="password" asp-for="Password" id="Password" placeholder="Mật khẩu cũ" class="form-control" required autofocus />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-3 mt-2">
+                        Mật khẩu mới:
+                    </div>
+                    <div class="col-7">
+                        <input type="password" asp-for="Password" name="newPassword" id="newPassword" placeholder="Mật khẩu mới" class="form-control" required autofocus />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-3 mt-2">
+                        Xác nhận mật khẩu:
+                    </div>
+                    <div class="col-7">
+                        <input type="password" asp-for="Password" name="rePassword" id="rePassword" placeholder="Nhập lại mật khẩu mới" class="form-control" required autofocus />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-3 mt-2">
+                        Your Address:
+                    </div>
+                    <div class="col-7">
+                        <input type="text" asp-for="Address" id="Address" placeholder="Address" class="form-control" required autofocus />
+                        <span asp-validation-for="Address"></span>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-3 mt-2">
+                        Number Phone:
+                    </div>
+                    <div class="col-7">
+                        <input type="number" asp-for="Phone" id="Phone" placeholder="Phone" class="form-control" required autofocus />
+                        <span asp-validation-for="Phone" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-3 mt-2">
+                        Email:
+                    </div>
+                    <div class="col-7">
+                        <input type="email" asp-for="Email" id="Email" placeholder="Email" class="form-control" required autofocus />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-2"></div>
+        </div>
+
+        @{
+            if (TempData["status"] != null)
+            {
+                <div class="alert alert-danger" role="alert">
+                    @status
+                </div>
+            }
+        }
+        <div class="mt-3">
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Đổi thông tin</button>
+        </div>
+    </form>
+</div>

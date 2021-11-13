@@ -60,6 +60,7 @@ namespace ClothingOnlineWeb.Controllers
             }
             if (count > 0)
             {
+                session.Remove(jsoncart);
                 return RedirectToAction("listproduct", "product");
             }
             else
@@ -106,6 +107,7 @@ namespace ClothingOnlineWeb.Controllers
             }
             if (count > 0)
             {
+                session.Remove("cart");
                 return RedirectToAction("listproduct", "product");
             }
             else

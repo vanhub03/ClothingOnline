@@ -52,15 +52,16 @@
                                                 @account.Username
                                             </span>
                                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                                <li><a class="dropdown-item" asp-controller="Account" asp-action="Logout" >Logout</a></li>
-                                                <li><a class="dropdown-item" href="/order/ViewOrderByAccountId?id=@account.Userid">Thong tin hoa don</a></li>
+                                                <li><a class="dropdown-item" asp-controller="Account" asp-action="Logout">Đăng xuất</a></li>
+                                                <li><a class="dropdown-item" href="/order/ViewOrderByAccountId?id=@account.Userid">Xem hóa đơn</a></li>
+                                                <li><a class="dropdown-item" href="/account/updateaccount?id=@account.Userid">Đổi thông tin</a></li>
                                             </ul>
                                         </li>
                                     }
                                     else
                                     {
                                         <li class="nav-item">
-                                            <a class="nav-link" asp-controller="Account" asp-action="Login">Login</a>
+                                            <a class="nav-link" asp-controller="Account" asp-action="Login">Đăng nhập</a>
                                         </li>
                                     }
                                 }

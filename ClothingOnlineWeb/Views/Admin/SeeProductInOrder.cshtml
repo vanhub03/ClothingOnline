@@ -1,7 +1,5 @@
-﻿@using ClothingOnlineWeb.Models
-@using Microsoft.AspNetCore.Http
-@using Newtonsoft.Json;
-@model List<Account>
+﻿@model Order
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -13,7 +11,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-  
 
     <title>SB Admin 2 - Tables</title>
 
@@ -112,74 +109,18 @@
                 </nav>
                 <!-- End of Topbar -->
                 <!-- Begin Page Content -->
-                <div class="container-fluid">
-
-                    <!-- Page Heading -->
-                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Account</h1>
-
-                    </div>
-
-
-                    <!-- DataTales Example -->
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3" style="display: flex; justify-content: space-between;">
-                            <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>UserName</th>
-                                            <th>Password</th>
-                                            <th>Địa Chỉ</th>
-                                            <th>Số Điện Thoại</th>
-                                            <th>Email</th>
-                                            <th>Quyền</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-
-                                    <tbody>
-                                        @foreach (var p in Model)
-                                        {
-                            <tr>
-                                <td>@p.Userid</td>
-                                <td>@p.Username</td>
-                                <td>@p.Password</td>
-                                <td>@p.Address</td>
-                                <td>@p.Phone</td>
-                                <td>@p.Email</td>
-                                @if (p.Isadmin == true)
-                                {
-                <td>Admin</td>
- }
-            else
-            {
-        <td>User</td>
-}
-
-
-                            <td style="display: flex; justify-content: center;">
-
-                                <a asp-controller="Admin" asp-action="EditAccount" asp-route-id="@p.Userid">
-                                    <button type="button" class="btn btn-success" style="margin-right:8px">Sửa</button>
-                                </a>
-                                <a href="/Admin/DeleteAccount/@p.Userid" class="delete btn btn-danger"  data-confirm="Bạn có chắc về hành động này chứ?">Cấm</a>
-                              
-
-                            </td>
-                            </tr>}
-
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
+                <h2>Sản phẩm: </h2>
+                @foreach (var a in Model.OrderDetails)
+                {
+                    <p>Tên sản phẩm: @a.Product.Productname</p>
+                    <p>Số lượng: @a.Quantity</p>
+                    <p>Giá tiền: @(a.Quantity * a.Product.Price)</p>
+                }
+                <p>Tổng số tiền cần thanh toán: @Model.Totalprice</p>
+                @if (Model.Status == 2)
+                {
+                    <a href="/admin/ConfirmOrder?id=@Model.Orderid" class="btn btn-danger">Xác nhận</a>
+                }
                 <!-- /.container-fluid -->
 
             </div>
@@ -188,13 +129,11 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2020</span>
+
                     </div>
                 </div>
             </footer>
             <!-- End of Footer -->
-          
-
 
         </div>
         <!-- End of Content Wrapper -->
@@ -206,7 +145,25 @@
         <i class="fas fa-angle-up"></i>
     </a>
 
-
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" href="login.html">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Bootstrap core JavaScript-->
     <script src="~/vendor/jquery/jquery.min.js"></script>
@@ -224,22 +181,7 @@
 
     <!-- Page level custom scripts -->
     <script src="~/js1/datatables-demo.js"></script>
-    <script src="~/js1/JavaScript.js"></script> 
-    <script>
-        var deleteLinks = document.querySelectorAll('.delete');
 
-        for (var i = 0; i < deleteLinks.length; i++) {
-            deleteLinks[i].addEventListener('click', function (event) {
-                event.preventDefault();
-
-                var choice = confirm(this.getAttribute('data-confirm'));
-
-                if (choice) {
-                    window.location.href = this.getAttribute('href');
-                }
-            });
-        }
-    </script>
 </body>
 
 </html>

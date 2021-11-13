@@ -70,6 +70,43 @@ namespace ClothingOnlineWeb.Controllers
             return View(products);
           
         }
+        public IActionResult Order()
+        {
+            var orders = context.Orders.ToList();
+            return View(orders);
+        }
+        public IActionResult SeeProductInOrder(int id)
+        {
+            var order = context.Orders.Find(id);
+            
+                var orderdetails = context.OrderDetails.Where(o => o.OrderId == order.Orderid).ToList();
+                foreach (var orderdetail in orderdetails)
+                {
+                    var product = context.Products.Find(orderdetail.Productid);
+                    orderdetail.Product = product;
+                    order.OrderDetails.Add(orderdetail);
+                }
+            return View(order);
+        }
+        public IActionResult ConfirmOrder(int id)
+        {
+            var order = context.Orders.Find(id);
+            order.Status = 3;
+            var orderdetails = context.OrderDetails.Where(o => o.OrderId == order.Orderid).ToList();
+            foreach (var orderdetail in orderdetails)
+            {
+                var product = context.Products.Find(orderdetail.Productid);
+                orderdetail.Product = product;
+                product.Unitinstock = product.Unitinstock - orderdetail.Quantity;
+                if(product.Unitinstock <= 0)
+                {
+                    product.Enable = false;
+                }
+                context.SaveChanges();
+            }
+            return RedirectToAction("Order", "Admin");
+        }
+
         [HttpGet]
         public IActionResult AddAccount()
         {
