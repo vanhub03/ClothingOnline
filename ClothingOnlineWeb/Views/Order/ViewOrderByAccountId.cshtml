@@ -1,0 +1,30 @@
+﻿@model List<Order>
+
+@foreach (var item in Model)
+{
+    <h1>Ma so don hang: @item.Orderid</h1>
+    <p>Ten khach hang: @item.Customername</p>
+    <p>So dien thoai: @item.Phone</p>
+    <p>Dia chi nhan hang: @item.Address</p>
+    <p>Ngay dat hang: @item.CreatedDate</p>
+    if (item.Status == 1)
+    {
+        <p>Tinh trang don hang: Da hoan thanh</p>
+    }
+    else if (item.Status == 2)
+    {
+        <p>Tinh trang don hang: Dang xac nhan</p>
+    }
+    else 
+    {
+        <p>Tinh trang don hang: Dang xu ly</p>
+    }
+    <h2>San pham: </h2>
+    foreach(var a in item.OrderDetails)
+    {
+        <p>Ten san pham: @a.Product.Productname</p>
+        <p>So luong: @a.Quantity</p>
+        <p>Gia tien: @(a.Quantity * a.Product.Price)</p>
+    }
+    <p>Tong so tien can thanh toan: @item.Totalprice</p>
+}

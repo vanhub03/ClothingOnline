@@ -113,5 +113,20 @@ namespace ClothingOnlineWeb.Controllers
                 return RedirectToAction("Error");
             }
         }
+        public IActionResult ViewOrderByAccountId(int id)
+        {
+            var orders = context.Orders.Where(o => o.Accountid == id).ToList();
+            foreach (var order in orders)
+            {
+                var orderdetails = context.OrderDetails.Where(o => o.OrderId == order.Orderid).ToList();
+                foreach(var orderdetail in orderdetails)
+                {
+                    var product = context.Products.Find(orderdetail.Productid);
+                    orderdetail.Product = product;
+                    order.OrderDetails.Add(orderdetail);
+                }
+            }
+            return View(orders);
+        }
     }
 }
