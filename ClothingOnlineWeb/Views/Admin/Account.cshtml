@@ -149,33 +149,40 @@
                                     <tbody>
                                         @foreach (var p in Model)
                                         {
-                            <tr>
-                                <td>@p.Userid</td>
-                                <td>@p.Username</td>
-                                <td>@p.Password</td>
-                                <td>@p.Address</td>
-                                <td>@p.Phone</td>
-                                <td>@p.Email</td>
-                                @if (p.Isadmin == true)
-                                {
-                <td>Admin</td>
- }
-            else
-            {
-        <td>User</td>
-}
+                                        <tr>
+                                            <td>@p.Userid</td>
+                                            <td>@p.Username</td>
+                                            <td><input type="password" value="@p.Password" disabled /></td>
+                                            <td>@p.Address</td>
+                                            <td>@p.Phone</td>
+                                            <td>@p.Email</td>
+                                            @if (p.Isadmin == true)
+                                            {
+                                        <td>Admin</td> }
+                                                        else
+                                                        {
+                                        <td>User</td>}
 
 
-                            <td style="display: flex; justify-content: center;">
+                                            <td style="display: flex; justify-content: center;">
 
-                                <a asp-controller="Admin" asp-action="EditAccount" asp-route-id="@p.Userid">
-                                    <button type="button" class="btn btn-success" style="margin-right:8px">Sửa</button>
-                                </a>
-                                <a href="/Admin/DeleteAccount/@p.Userid" class="delete btn btn-danger"  data-confirm="Bạn có chắc về hành động này chứ?">Cấm</a>
-                              
+                                                <a asp-controller="Admin" asp-action="EditAccount" asp-route-id="@p.Userid">
+                                                    <button type="button" class="btn btn-success" style="margin-right:8px">Sửa</button>
+                                                </a>
+                                                @if (p.Isadmin == true)
+                                                {
+                                                   <a href="/Admin/UpdateAdmin/@p.Userid" class="delete btn btn-danger" data-confirm="Bạn có chắc về hành động này chứ?">Chuyển Thành User</a>}
+                                                else
+                                                {
+                                                  <a href="/Admin/UpdateAdmin/@p.Userid" class="delete btn btn-danger" data-confirm="Bạn có chắc về hành động này chứ?">Chuyển Thành Admin</a>
+                                                }
 
-                            </td>
-                            </tr>}
+
+                                                <a href="/Admin/DeleteAccount/@p.Userid" class="delete btn btn-danger" data-confirm="Bạn có chắc về hành động này chứ?">Cấm</a>
+
+
+                                                </td>
+                                            </tr>}
 
                                     </tbody>
                                 </table>
