@@ -1,7 +1,12 @@
 ﻿@using ClothingOnlineWeb.Models
 @using Microsoft.AspNetCore.Http
 @using Newtonsoft.Json;
-@model List<Product>
+@model ClothingOnlineWeb.Models.Product
+@{
+    ProjectPRN211Context context = new ProjectPRN211Context();
+    var categories = context.Categories.ToList();
+}
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -111,87 +116,87 @@
                 </nav>
                 <!-- End of Topbar -->
                 <!-- Begin Page Content -->
-                <div class="container-fluid">
-
-                    <!-- Page Heading -->
-                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Product</h1>
-
-                    </div>
-
-
-                    <!-- DataTales Example -->
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3" style="display: flex; justify-content: space-between;">
-                            <h6 class="m-0 font-weight-bold text-primary">DataTables</h6>
-                            <a href="/admin/AddProduct" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-                                <i class="fas fa-plus-circle fa-sm text-white-50"></i> Thêm Sản Phẩm
-                            </a>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <thead>
-                                        <tr>
-                                            <th>ProductID</th>
-                                            <th>Product Name</th>
-                                            <th>Price</th>
-                                            <th>Description</th>
-                                            <th>Unitinstock</th>
-                                            <th>Category</th>
-                                            <th>Enable</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-
-                                    <tbody>
-                                        @foreach (var p in Model)
-                                        {
-                                        <tr>
-                                            <td>@p.Productid</td>
-                                            <td>@p.Productname</td>
-                                            <td>@p.Price</td>
-                                            <td>@p.Description</td>
-                                            <td>@p.Unitinstock</td>
-                                            <td>@p.Category.Categoryname</td>
-                                            @if (p.Enable == true)
+                <div class="text-center mt-5 container-fluid">
+                    <form style="margin: auto;" asp-controller="Admin" asp-action="AddProduct" method="post" enctype="multipart/form-data">
+                        <h1 class="h3 mb-3 font-weigh-normal">Add Product</h1><br />
+                        <div class="row">
+                            <div class="col-2"></div>
+                            <div class="col-8">
+                                <div class="row mt-3">
+                                    <div class="col-3 mt-2">
+                                        Tên Sản Phẩm
+                                    </div>
+                                    <div class="col-7">
+                                        <input type="text" asp-for="Productname" placeholder="Tên Sản Phẩm" class="form-control" required autofocus value="" />
+                                        <span asp-validation-for="Productname"></span>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-3 mt-2">
+                                        Giá Tiền:
+                                    </div>
+                                    <div class="col-7">
+                                        <input type="text" asp-for="Price" placeholder="Giá Sản Phẩm" class="form-control" required autofocus />
+                                        <span asp-validation-for="Price"></span>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-3 mt-2">
+                                        Giới Thiệu:
+                                    </div>
+                                    <div class="col-7">
+                                        <input type="text" asp-for="Description" placeholder="Giới Thiệu" class="form-control" required autofocus />
+                                        <span asp-validation-for="Description"></span>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-3 mt-2">
+                                        Số lượng hàng còn lại:
+                                    </div>
+                                    <div class="col-7">
+                                        <input type="number" asp-for="Unitinstock" placeholder="Số Hàng còn lại" class="form-control" required autofocus />
+                                        <span asp-validation-for="Unitinstock"></span>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-3 mt-2">
+                                        Chọn danh mục cho sản phẩm:
+                                    </div>
+                                    <select name="categoryid">
+                                        @{ foreach (var i in categories)
                                             {
-                                        <td>Enable</td>
+
+                                                <option value="@i.Categoryid">@i.Categoryname</option>
                                             }
-                                    else
-                                    {
-                                        <td>Disable</td>
                                         }
 
-                                        <td style="display: flex; justify-content: center">
-                                            <a asp-controller="Admin" asp-action="EditProduct" asp-route-id="@p.Productid">
-                                                <button type="button" class="btn btn-success mr-1">Sửa</button>
-                                            </a>
+                                    </select>
 
-                                            @if (p.Enable == true)
-                                            {
-                                                <a href="/Admin/UpdateProduct/@p.Productid" class="delete btn btn-danger" data-confirm="Bạn có chắc về hành động này chứ?">Disable</a>}
-                                            else
-                                            {
-                                                <a href="/Admin/UpdateProduct/@p.Productid" class="delete btn btn-danger" data-confirm="Bạn có chắc về hành động này chứ?">Enable</a>
-                                            }
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-3 mt-2">
+                                        Chọn ảnh:
+                                    </div>
+                                    <input type="file" asp-for="Images" name="imageFile" class="form-control" required autofocus accept="image/*" multiple />
 
-                                        </td>
-                                        </tr>
-                                            }
+                                </div>
 
-                                    </tbody>
-                                </table>
                             </div>
+                            <div class="col-2"></div>
                         </div>
-                    </div>
 
+
+                        <div class="mt-4" style="justify-content:center; display:flex">
+                            <button class="btn btn-lg btn-primary" style="" type="submit">Add</button>
+                        </div>
+                    </form>
                 </div>
                 <!-- /.container-fluid -->
 
             </div>
             <!-- End of Main Content -->
-           
+            <!-- Footer -->
+
 
         </div>
         <!-- End of Content Wrapper -->
@@ -222,6 +227,10 @@
             </div>
         </div>
     </div>
+
+    
+    
+
 
     <!-- Bootstrap core JavaScript-->
     <script src="~/vendor/jquery/jquery.min.js"></script>

@@ -4,8 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
+using System.Net.Http.Headers;
 
 namespace ClothingOnlineWeb.Controllers
 {
@@ -17,24 +20,24 @@ namespace ClothingOnlineWeb.Controllers
             if (HttpContext.Session.GetString("accountSession") != null)
             {
                 var account = JsonConvert.DeserializeObject<Account>(HttpContext.Session.GetString("accountSession"));
-                if(account.Isadmin!= true)
+                if (account.Isadmin != true)
                 {
-                    return RedirectToAction("Index","Error");
+                    return RedirectToAction("Index", "Error");
                 }
                 else
                 {
                     return View();
                 }
 
-                
+
             }
             else
             {
-                return RedirectToAction("Index","Error");
+                return RedirectToAction("Index", "Error");
             }
-        
+
         }
-       
+
         public IActionResult Accounts()
         {
             if (HttpContext.Session.GetString("accountSession") != null)
@@ -53,9 +56,9 @@ namespace ClothingOnlineWeb.Controllers
             }
             else
             {
-               return RedirectToAction("Index", "Error");
+                return RedirectToAction("Index", "Error");
             }
-           
+
         }
         public IActionResult Product()
         {
@@ -85,8 +88,8 @@ namespace ClothingOnlineWeb.Controllers
             {
                 return RedirectToAction("Index", "Error");
             }
-          
-          
+
+
         }
         public IActionResult Order()
         {
@@ -96,14 +99,14 @@ namespace ClothingOnlineWeb.Controllers
         public IActionResult SeeProductInOrder(int id)
         {
             var order = context.Orders.Find(id);
-            
-                var orderdetails = context.OrderDetails.Where(o => o.OrderId == order.Orderid).ToList();
-                foreach (var orderdetail in orderdetails)
-                {
-                    var product = context.Products.Find(orderdetail.Productid);
-                    orderdetail.Product = product;
-                    order.OrderDetails.Add(orderdetail);
-                }
+
+            var orderdetails = context.OrderDetails.Where(o => o.OrderId == order.Orderid).ToList();
+            foreach (var orderdetail in orderdetails)
+            {
+                var product = context.Products.Find(orderdetail.Productid);
+                orderdetail.Product = product;
+                order.OrderDetails.Add(orderdetail);
+            }
             return View(order);
         }
         public IActionResult ConfirmOrder(int id)
@@ -116,7 +119,7 @@ namespace ClothingOnlineWeb.Controllers
                 var product = context.Products.Find(orderdetail.Productid);
                 orderdetail.Product = product;
                 product.Unitinstock = product.Unitinstock - orderdetail.Quantity;
-                if(product.Unitinstock <= 0)
+                if (product.Unitinstock <= 0)
                 {
                     product.Enable = false;
                 }
@@ -146,7 +149,7 @@ namespace ClothingOnlineWeb.Controllers
             {
                 return RedirectToAction("Index", "Error");
             }
-         
+
         }
         [HttpPost]
         public IActionResult AddAccount(Account account1)
@@ -188,7 +191,7 @@ namespace ClothingOnlineWeb.Controllers
                 }
             }
             return View();
-            
+
         }
 
 
@@ -216,7 +219,7 @@ namespace ClothingOnlineWeb.Controllers
             {
                 return RedirectToAction("Index", "Error");
             }
-          
+
         }
         [HttpPost]
         public IActionResult ClickEditAccount(Account account1)
@@ -245,7 +248,7 @@ namespace ClothingOnlineWeb.Controllers
             {
                 return RedirectToAction("Index", "Error");
             }
-            
+
         }
 
 
@@ -275,8 +278,8 @@ namespace ClothingOnlineWeb.Controllers
             {
                 return RedirectToAction("Index", "Error");
             }
-           
-            
+
+
         }
 
 
@@ -312,8 +315,256 @@ namespace ClothingOnlineWeb.Controllers
             {
                 return RedirectToAction("Index", "Error");
             }
-          
+
+
+        }
+        [HttpGet]
+        public IActionResult AddProduct()
+        {
+            if (HttpContext.Session.GetString("accountSession") != null)
+            {
+                var account = JsonConvert.DeserializeObject<Account>(HttpContext.Session.GetString("accountSession"));
+                if (account.Isadmin != true)
+                {
+                    return RedirectToAction("Index", "Error");
+                }
+                else
+                {
+                    return View();
+                }
+
+
+            }
+            else
+            {
+                return RedirectToAction("Index", "Error");
+            }
+
+        }
+
+        [HttpGet]
+        [Route("/Admin/UpdateProduct/{id}")]
+        public IActionResult UpdateProduct(int id)
+        {
+            if (HttpContext.Session.GetString("accountSession") != null)
+            {
+                var account = JsonConvert.DeserializeObject<Account>(HttpContext.Session.GetString("accountSession"));
+                if (account.Isadmin != true)
+                {
+                    return RedirectToAction("Index", "Error");
+                }
+                else
+                {
+                    var product = context.Products.Where(i => i.Productid == id).FirstOrDefault();
+                    if (product.Enable == false)
+                    { product.Enable = true; }
+                    else
+                    {
+                        product.Enable = false;
+                    }
+
+                    context.SaveChanges();
+
+                    return RedirectToAction("Product", "Admin");
+                }
+
+
+            }
+            else
+            {
+                return RedirectToAction("Index", "Error");
+            }
+
+
+        }
+        private IHostingEnvironment _hostingEnv;
+        public AdminController(IHostingEnvironment hostingEnv)
+        {
+            _hostingEnv = hostingEnv;
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddProduct(Product product, List<IFormFile> ImageFile)
+        {
+
+            if (ModelState.IsValid)
+            {
+                if (HttpContext.Session.GetString("accountSession") != null)
+                {
+                    var account = JsonConvert.DeserializeObject<Account>(HttpContext.Session.GetString("accountSession"));
+                    if (account.Isadmin != true)
+                    {
+                        return RedirectToAction("Index", "Error");
+                    }
+                    else
+                    {
+
+
+                        product.CreatedDate = DateTime.Now;
+                        product.Enable = true;
+                        context.Products.Add(product);
+                        context.SaveChanges();
+
+
+                        foreach (var i in ImageFile) {
+
+                            var lastproduct = context.Products.OrderByDescending(s => s.Productid).FirstOrDefault();
+                            Image image = new Image();
+                            image.Productid = lastproduct.Productid;
+                            var filename = ContentDispositionHeaderValue.Parse(i.ContentDisposition).FileName.Trim('"');
+                            var uniqueFileName = GetUniqueFileName(filename);
+                            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Images", uniqueFileName);
+                            using (System.IO.Stream stream = new FileStream(path, FileMode.Create))
+                            {
+                                await i.CopyToAsync(stream);
+                            }
+                            image.Imagelink = uniqueFileName;
+
+                            context.Images.Add(image);
+
+                            context.SaveChanges();
+
+                        }
+
+
+
+                        return RedirectToAction("Product", "Admin");
+                    }
+
+
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Error");
+                }
+            }
+            return View();
+
+        }
+        private string GetUniqueFileName(string fileName)
+        {
+            fileName = Path.GetFileName(fileName);
+            return Path.GetFileNameWithoutExtension(fileName)
+                      + "_"
+                      + Guid.NewGuid().ToString().Substring(0, 4)
+                      + Path.GetExtension(fileName);
+        }
+
+        [HttpGet]
+        [Route("/Admin/EditProduct/{id}")]
+        public IActionResult EditProduct(int id)
+        {
+            if (HttpContext.Session.GetString("accountSession") != null)
+            {
+                var account = JsonConvert.DeserializeObject<Account>(HttpContext.Session.GetString("accountSession"));
+                if (account.Isadmin != true)
+                {
+                    return RedirectToAction("Index", "Error");
+                }
+                else
+                {
+                    var product1 = context.Products.Where(i => i.Productid == id).FirstOrDefault();
+                    var images = context.Images.Where(i => i.Productid == product1.Productid).ToList();
+                    foreach (var i in images)
+                    {
+                        product1.Images.Add(i);
+                    }
+                    return View(product1);
+                }
+
+
+            }
+            else
+            {
+                return RedirectToAction("Index", "Error");
+            }
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ClickEditProduct(Product product, List<IFormFile> ImageFile)
+        {
+            if (HttpContext.Session.GetString("accountSession") != null)
+            {
+                var account = JsonConvert.DeserializeObject<Account>(HttpContext.Session.GetString("accountSession"));
+                if (account.Isadmin != true)
+                {
+                    return RedirectToAction("Index", "Error");
+                }
+                else
+                {
+                    if (ImageFile.Count == 0)
+                    {
+                        var productupdate = context.Products.Where(i => i.Productid == product.Productid).FirstOrDefault();
+                        productupdate.Productname = product.Productname;
+                        productupdate.Price = product.Price;
+                        productupdate.Description = product.Description;
+                        productupdate.Unitinstock = product.Unitinstock;
+                        productupdate.Categoryid = product.Categoryid;
+
+                        context.SaveChanges();
+                        return RedirectToAction("Product", "Admin");
+                    }
+                    else
+                    {
+
+                        var productupdate = context.Products.Where(i => i.Productid == product.Productid).FirstOrDefault();
+                        productupdate.Productname = product.Productname;
+                        productupdate.Price = product.Price;
+                        productupdate.Description = product.Description;
+                        productupdate.Unitinstock = product.Unitinstock;
+                        productupdate.Categoryid = product.Categoryid;
+                        context.SaveChanges();
+
+
+                        var images = context.Images.Where(i => i.Productid == product.Productid).ToList();
+                        foreach (var i in images)
+                        {
+                            context.Images.Remove(i);
+
+                            context.SaveChanges();
+                        }
+                    
+                       
+                       
+                      
+
+                        foreach (var i in ImageFile)
+                        {
+
+                            var lastproduct = context.Products.Where(s => s.Productid == productupdate.Productid).FirstOrDefault();
+                            Image image = new Image();
+                            image.Productid = lastproduct.Productid;
+                            var filename = ContentDispositionHeaderValue.Parse(i.ContentDisposition).FileName.Trim('"');
+                            var uniqueFileName = GetUniqueFileName(filename);
+                            var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Images", uniqueFileName);
+                            using (System.IO.Stream stream = new FileStream(path, FileMode.Create))
+                            {
+                                await i.CopyToAsync(stream);
+                            }
+                            image.Imagelink = uniqueFileName;
+
+                            context.Images.Add(image);
+
+                            context.SaveChanges();
+                        }
+
+
+
+
+                    }
+                    return RedirectToAction("Product", "Admin");
+
+                }
+            }
+            else
+            {
+                return RedirectToAction("Index", "Error");
+            }
+
+            }
+
+
 
         }
     }
-}
+
