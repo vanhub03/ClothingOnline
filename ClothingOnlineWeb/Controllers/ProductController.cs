@@ -157,5 +157,20 @@ namespace ClothingOnlineWeb.Controllers
             products.Sort((x, y) => y.CreatedDate.CompareTo(x.CreatedDate));
             return View(products);
         }
+
+        [HttpPost]
+        public IActionResult Search(string keyWord)
+        {
+            var products = context.Products.Where(c => c.Productname.Contains(keyWord) || c.Category.Categoryname.Contains(keyWord)).ToList();
+            foreach (var p in products)
+            {
+                var images = context.Images.Where(i => i.Productid == p.Productid).ToList();
+                foreach (var i in images)
+                {
+                    p.Images.Add(i);
+                }
+            }
+            return View(products);
+        }
     }
 }
