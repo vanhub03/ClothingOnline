@@ -16,6 +16,7 @@
     </head>
 
     <body class="container">
+        <div class="main">
         <header>
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
                 <div class="container-fluid">
@@ -80,7 +81,8 @@
         <main>
             @RenderBody()
         </main>
-        <footer class="text-center text-lg-start bg-light text-muted" style="background-color: rgba(0, 0, 0, 0.05);">
+        </div>
+        <footer id="footer" class="text-center text-lg-start bg-light text-muted" style="background-color: rgba(0, 0, 0, 0.05);">
             <div>
                 <h6 class="text-uppercase fw-bold mb-4 text-center">
                     Contact
@@ -124,8 +126,26 @@
                 <span class="text-reset fw-bold">PRN211</span>
             </div>
         </footer>
+
+        <style type="text/css">
+            html {
+                height: 100%;
+            }
+
+            body {
+                display: table;
+                width: 100%;
+                height: 100%;
+            }
+
+            .main {
+                display: table-row;
+                height: 100%;
+            }
+
+            #footer {
+                padding: 1rem;
+            }
+        </style>
     </body>
-
-
-
 </html>
