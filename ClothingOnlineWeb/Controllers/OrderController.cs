@@ -27,27 +27,29 @@ namespace ClothingOnlineWeb.Controllers
         [HttpPost]
         public IActionResult AddToOrder(Order order)
         {
-            var session = HttpContext.Session;
-            string jsoncart = session.GetString("cart");
-            var account = JsonConvert.DeserializeObject<Account>(session.GetString("accountSession"));
-            List<Cart> carts = new List<Cart>();
-            double total = 0;
-            if (jsoncart != null)
+            if (ModelState.IsValid)
             {
-                carts = JsonConvert.DeserializeObject<List<Cart>>(jsoncart);
-            }
-            foreach(var item in carts)
-            {
-                double price = item.product.Price * item.quantity;
-                total += price;
-            }
-            order.Accountid = account.Userid;
-            order.Status = 2;
-            order.CreatedDate = DateTime.Now;
-            order.Totalprice = total.ToString();
-            context.Orders.Add(order);
-            context.SaveChanges();
-            int count = 0;
+                var session = HttpContext.Session;
+                string jsoncart = session.GetString("cart");
+                var account = JsonConvert.DeserializeObject<Account>(session.GetString("accountSession"));
+                List<Cart> carts = new List<Cart>();
+                double total = 0;
+                if (jsoncart != null)
+                {
+                    carts = JsonConvert.DeserializeObject<List<Cart>>(jsoncart);
+                }
+                foreach (var item in carts)
+                {
+                    double price = item.product.Price * item.quantity;
+                    total += price;
+                }
+                order.Accountid = account.Userid;
+                order.Status = 2;
+                order.CreatedDate = DateTime.Now;
+                order.Totalprice = total.ToString();
+                context.Orders.Add(order);
+                context.SaveChanges();
+                int count = 0;
                 foreach (var item in carts)
                 {
                     OrderDetail orderDetail = new OrderDetail();
@@ -57,19 +59,23 @@ namespace ClothingOnlineWeb.Controllers
                     orderDetail.UnitPrice = item.product.Price;
                     context.OrderDetails.Add(orderDetail);
                     count = context.SaveChanges();
+                }
+                if (count > 0)
+                {
+                    session.Remove(jsoncart);
+                    return RedirectToAction("listproduct", "product");
+                }
+                else
+                {
+                    return RedirectToAction("Error");
+                }
             }
-            if (count > 0)
-            {
-                session.Remove(jsoncart);
-                return RedirectToAction("listproduct", "product");
-            }
-            else
-            {
-                return RedirectToAction("Error");
-            }
+            return View("NewInforToCheckOut");
         }
+
         public IActionResult AddToOrderWithAccountInfor()
         {
+
             var session = HttpContext.Session;
             string jsoncart = session.GetString("cart");
             var account = JsonConvert.DeserializeObject<Account>(session.GetString("accountSession"));
@@ -114,6 +120,7 @@ namespace ClothingOnlineWeb.Controllers
             {
                 return RedirectToAction("Error");
             }
+
         }
         public IActionResult ViewOrderByAccountId(int id)
         {
@@ -121,7 +128,7 @@ namespace ClothingOnlineWeb.Controllers
             foreach (var order in orders)
             {
                 var orderdetails = context.OrderDetails.Where(o => o.OrderId == order.Orderid).ToList();
-                foreach(var orderdetail in orderdetails)
+                foreach (var orderdetail in orderdetails)
                 {
                     var product = context.Products.Find(orderdetail.Productid);
                     orderdetail.Product = product;

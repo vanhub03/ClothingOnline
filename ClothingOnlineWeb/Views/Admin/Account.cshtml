@@ -124,6 +124,12 @@
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3" style="display: flex; justify-content: space-between;">
+                            <h6 class="m-0 font-weight-bold text-primary">DataTables</h6>
+                            <a href="/Admin/AddAccount" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                                <i class="fas fa-plus-circle fa-sm text-white-50"></i> Thêm tài khoản
+                            </a>
+                        </div>
+                        <div class="card-header py-3" style="display: flex; justify-content: space-between;">
                             <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
                         </div>
                         <div class="card-body">
@@ -145,40 +151,43 @@
                                     <tbody>
                                         @foreach (var p in Model)
                                         {
-                                        <tr>
-                                            <td>@p.Userid</td>
-                                            <td>@p.Username</td>
-                                            <td><input type="password" value="@p.Password" disabled /></td>
-                                            <td>@p.Address</td>
-                                            <td>@p.Phone</td>
-                                            <td>@p.Email</td>
-                                            @if (p.Isadmin == true)
-                                            {
-                                        <td>Admin</td> }
-                                                        else
-                                                        {
-                                        <td>User</td>}
-
-
-                                            <td style="display: flex; justify-content: center;">
-
-                                                <a asp-controller="Admin" asp-action="EditAccount" asp-route-id="@p.Userid">
-                                                    <button type="button" class="btn btn-success" style="margin-right:8px">Sửa</button>
-                                                </a>
+                                            <tr>
+                                                <td>@p.Userid</td>
+                                                <td>@p.Username</td>
+                                                <td><input type="password" value="@p.Password" disabled /></td>
+                                                <td>@p.Address</td>
+                                                <td>@p.Phone</td>
+                                                <td>@p.Email</td>
                                                 @if (p.Isadmin == true)
                                                 {
-                                                   <a href="/Admin/UpdateAdmin/@p.Userid" class="delete btn btn-danger" data-confirm="Bạn có chắc về hành động này chứ?">Chuyển Thành User</a>}
+                                                    <td>Admin</td>
+ }
                                                 else
                                                 {
-                                                  <a href="/Admin/UpdateAdmin/@p.Userid" class="delete btn btn-danger" data-confirm="Bạn có chắc về hành động này chứ?">Chuyển Thành Admin</a>
-                                                }
+                                                    <td>User</td>
+}
 
 
-                                                <a href="/Admin/DeleteAccount/@p.Userid" class="delete btn btn-danger" data-confirm="Bạn có chắc về hành động này chứ?">Cấm</a>
+                                                <td style="display: flex; justify-content: center;">
+
+                                                    <a asp-controller="Admin" asp-action="EditAccount" asp-route-id="@p.Userid">
+                                                        <button type="button" class="btn btn-success" style="margin-right:8px">Sửa</button>
+                                                    </a>
+                                                    @if (p.Isadmin == true)
+                                                    {
+                                                        <a href="/Admin/UpdateAdmin/@p.Userid" class="delete btn btn-danger" data-confirm="Bạn có chắc về hành động này chứ?">Chuyển Thành User</a>}
+                                                    else
+                                                    {
+                                                        <a href="/Admin/UpdateAdmin/@p.Userid" class="delete btn btn-danger" data-confirm="Bạn có chắc về hành động này chứ?">Chuyển Thành Admin</a>
+                                                    }
+
+
+                                                    <a href="/Admin/DeleteAccount/@p.Userid" class="delete btn btn-danger" data-confirm="Bạn có chắc về hành động này chứ?">Cấm</a>
 
 
                                                 </td>
-                                            </tr>}
+                                            </tr>
+}
 
                                     </tbody>
                                 </table>

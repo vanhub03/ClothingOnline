@@ -14,17 +14,20 @@
             double price = item.quantity * item.product.Price;
             total += price;
         }
-        <form asp-controller="Order" asp-action="addtoorder">
-            <label>Tên người nhận: </label>
-            <input asp-for="Customername" class="form-control" required autofocus />
-            <label>Số điện thoại: </label>
-            <input asp-for="Phone" class="form-control" required autofocus />
-            <label>Địa chỉ: </label>
-            <input asp-for="Address" class="form-control" required autofocus />
-            <label>Tổng số tiền phải thanh toán: </label>
-            <input asp-for="Totalprice" class="form-control" value="@total" disabled />
-            <input type="submit" class="btn btn-success" value="Order" />
-        </form>
+    <form asp-controller="Order" asp-action="addtoorder">
+        <label>Tên người nhận: </label>
+        <input asp-for="Customername" class="form-control" required autofocus />
+        <span asp-validation-for="Customername" class="text-danger"></span>
+        <label>Số điện thoại: </label>
+        <input asp-for="Phone" class="form-control" required autofocus />
+        <span asp-validation-for="Phone" class="text-danger"></span>
+        <label>Địa chỉ: </label>
+        <input asp-for="Address" class="form-control" required autofocus />
+        <span asp-validation-for="Address" class="text-danger"></span>
+        <label>Tổng số tiền phải thanh toán: </label>
+        <input asp-for="Totalprice" class="form-control" value="@total" disabled />
+        <input type="submit" class="btn btn-success" value="Order" />
+    </form>
     }
     else
     {

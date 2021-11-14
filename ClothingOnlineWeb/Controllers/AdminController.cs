@@ -151,39 +151,43 @@ namespace ClothingOnlineWeb.Controllers
         [HttpPost]
         public IActionResult AddAccount(Account account1)
         {
-            if (HttpContext.Session.GetString("accountSession") != null)
+            if (ModelState.IsValid)
             {
-                var account = JsonConvert.DeserializeObject<Account>(HttpContext.Session.GetString("accountSession"));
-                if (account.Isadmin != true)
+                if (HttpContext.Session.GetString("accountSession") != null)
                 {
-                    return RedirectToAction("Index", "Error");
+                    var account = JsonConvert.DeserializeObject<Account>(HttpContext.Session.GetString("accountSession"));
+                    if (account.Isadmin != true)
+                    {
+                        return RedirectToAction("Index", "Error");
+                    }
+                    else
+                    {
+                        var accounts = context.Accounts.ToList();
+                        //check exist
+                        foreach (var c in accounts)
+                        {
+                            if (ModelState.IsValid && account1.Username == c.Username)
+                            {
+                                TempData["status"] = "Username đã tồn tại!";
+                                return View(account1);
+                            }
+                        }
+                        account1.Isadmin = false;
+                        account1.Enable = true;
+                        context.Accounts.Add(account1);
+                        context.SaveChanges();
+
+                        return RedirectToAction("Accounts", "Admin");
+                    }
+
+
                 }
                 else
                 {
-                    var accounts = context.Accounts.ToList();
-                    //check exist
-                    foreach (var c in accounts)
-                    {
-                        if (ModelState.IsValid && account1.Username == c.Username)
-                        {
-                            TempData["status"] = "Username đã tồn tại!";
-                            return View(account1);
-                        }
-                    }
-                    account1.Isadmin = false;
-                    account1.Enable = true;
-                    context.Accounts.Add(account1);
-                    context.SaveChanges();
-
-                    return RedirectToAction("Accounts", "Admin");
+                    return RedirectToAction("Index", "Error");
                 }
-
-
             }
-            else
-            {
-                return RedirectToAction("Index", "Error");
-            }
+            return View();
             
         }
 
