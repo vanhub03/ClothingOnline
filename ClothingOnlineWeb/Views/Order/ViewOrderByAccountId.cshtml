@@ -1,37 +1,97 @@
 ﻿@model List<Order>
 
-@if (Model.Count > 0)
-{
-    foreach (var item in Model)
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    @if (Model.Count > 0)
     {
-    <h1>Ma so don hang: @item.Orderid</h1>
-    <p>Ten khach hang: @item.Customername</p>
-    <p>So dien thoai: @item.Phone</p>
-    <p>Dia chi nhan hang: @item.Address</p>
-    <p>Ngay dat hang: @item.CreatedDate</p>
-        if (item.Status == 1)
+        foreach (var item in Model)
         {
-        <p>Tình trạng đơn hàng: Đã hoàn thành</p>
+
+            <h2> Mã đơn hàng: @item.Orderid</h2>
+            <div class="row">
+                <div class="col-6">
+                    Tên khách hàng: @item.Customername
+                </div>
+                <div class="col-6">
+                    Số điện thoại: @item.Phone
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    Địa chỉ nhận hàng: @item.Address
+                </div>
+                <div class="col-6">
+                    Ngày đặt hàng: @item.CreatedDate
+                </div>
+            </div>
+            @if (item.Status == 1)
+            {
+                <p>
+                    Tình trạng đơn hàng:
+                    <span class="text-success">
+                        <strong>Đã hoàn thành</strong>
+                    </span>
+                </p>
+            }
+            else if (item.Status == 2)
+            {
+                <p>
+                    Tình trạng đơn hàng:
+                    <span class="text-warning">
+                        <strong>Đang xác nhận</strong>
+                    </span>
+
+                </p>
+            }
+            else
+            {
+                <p>
+                    Tình trạng đơn hàng:
+                    <span class="text-danger">
+                        <strong>Đang xử lý</strong>
+                    </span>
+                </p>
+            }
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">Tên sản phẩm</th>
+                        <th class="text-center" scope="col">Số lượng</th>
+                        <th class="text-right" scope="col">Giá tiền (VND)</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var a in item.OrderDetails)
+                    {
+                        <tr>
+                            <td>@a.Product.Productname</td>
+                            <td class="text-center">@a.Quantity</td>
+                            <td class="text-right">@(a.Quantity * a.Product.Price)</td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td>
+                            <strong>Tổng số tiền cần thanh toán</strong>
+                        </td>
+                        <td></td>
+                        <td class="text-right">@item.Totalprice</td>
+                    </tr>
+                </tfoot>
+            </table>
+            <hr />
         }
-        else if (item.Status == 2)
-        {
-        <p>Tình trạng đơn hàng: Đang xác nhận</p>
-        }
-        else
-        {
-        <p>Tình trạng đơn hàng: Đang xử lý</p>
-        }
-    <h2>Sản phẩm: </h2>
-        foreach (var a in item.OrderDetails)
-        {
-        <p>Tên sản phẩm: @a.Product.Productname</p>
-        <p>Số lượng: @a.Quantity</p>
-        <p>Giá tiền: @(a.Quantity * a.Product.Price)</p>
-        }
-    <p>Tổng số tiền cần thanh toán: @item.Totalprice</p>
     }
-}
-else
-{
-    <h2>Bạn chưa có order nào.</h2>
-}
+    else
+    {
+        <h2>Bạn chưa có order nào.</h2>
+    }
+</body>
