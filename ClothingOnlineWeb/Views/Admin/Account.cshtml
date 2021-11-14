@@ -171,14 +171,14 @@
                                                 <td style="display: flex; justify-content: center;">
 
                                                     <a asp-controller="Admin" asp-action="EditAccount" asp-route-id="@p.Userid">
-                                                        <button type="button" class="btn btn-success" style="margin-right:8px">Sửa</button>
+                                                        <button type="button" class="btn btn-success mr-1" >Sửa</button>
                                                     </a>
                                                     @if (p.Isadmin == true)
                                                     {
-                                                        <a href="/Admin/UpdateAdmin/@p.Userid" class="delete btn btn-danger" data-confirm="Bạn có chắc về hành động này chứ?">Chuyển Thành User</a>}
+                                                        <a href="/Admin/UpdateAdmin/@p.Userid" class="delete btn btn-info mr-1" style="width:182.13px" data-confirm="Bạn có chắc về hành động này chứ?">Chuyển Thành User</a>}
                                                     else
                                                     {
-                                                        <a href="/Admin/UpdateAdmin/@p.Userid" class="delete btn btn-danger" data-confirm="Bạn có chắc về hành động này chứ?">Chuyển Thành Admin</a>
+                                                        <a href="/Admin/UpdateAdmin/@p.Userid" class="delete btn btn-info mr-1" data-confirm="Bạn có chắc về hành động này chứ?">Chuyển Thành Admin</a>
                                                     }
 
 

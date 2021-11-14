@@ -20,28 +20,21 @@
         <div class="col-md-6 mb-4 mb-md-0">
             <div class="mdb-lightbox">
                 <div class="row product-gallery mx-1">
-
                     <div class="col-12 mb-0">
-
-                        <img class="a" src="~/Images/@Model.Images.First().Imagelink" />
-
-
+                        <img class="a img-thumbnail mt-3" src="~/Images/@Model.Images.First().Imagelink" />
                     </div>
-                    
-
-                            <div class="col-12">
-                                <div class="row row-cols-xl-4 justify-content-center">
-                                    @{
-                                        foreach (var item in Model.Images)
-                                        {
-                                            <div class="col mb-5 view overlay rounded z-depth-1 gallery-item ">
-                                                <img class="b" src="~/Images/@item.Imagelink" alt="Alternate Text" />
-                                            </div>
-                                        }
-                                    }
-                                </div>
-                            </div>
-                        
+                    <div class="col-12">
+                        <div class="row row-cols-xl-6 justify-content-center">
+                            @{
+                                foreach (var item in Model.Images)
+                                {
+                                    <div class="col mb-5 mt-3 view overlay rounded z-depth-1 gallery-item ">
+                                        <img class="b img-thumbnail" src="~/Images/@item.Imagelink" alt="Alternate Text" />
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -78,7 +71,7 @@
 
     <h2>San pham lien quan</h2>
 
-    <div class="px-4 px-lg-5 mt-5 row gx-4 gx-lg-5 row-cols-xl-5 justify-content-center">
+    <div class="px-4 px-lg-5 mt-5 row gx-4 gx-lg-5 row-cols-xl-4 justify-content-center">
         @{
             foreach (var item in productRelated)
             {
@@ -103,11 +96,14 @@
 </body>
 
 <style type="text/css">
-        .a {
+    .a {
         border-radius: 4px;
         padding: 5px;
         height: 600px;
         width: 450px;
+        display: block;
+        margin-left:auto;
+        margin-right:auto;
     }
 
     .b {
@@ -115,6 +111,9 @@
         padding: 5px;
         height: 100px;
         width: 75px;
+        display:block;
+        margin-right:auto;
+        margin-left:auto;
     }
 
     .card-img-top {

@@ -40,11 +40,15 @@
                             @await Html.PartialAsync("_CartPartial")
 
                         </ul>
-                        <form class="d-flex" asp-controller="product" asp-action="Search" method="post">
-                            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="searchWord" name="keyWord">
-                            <button class="btn btn-outline-success" type="submit">Search</button>
-                            </form>
-                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <form asp-controller="product" asp-action="Search" method="post">
+
+                            <ul class="navbar-nav navbar-right">
+                                <li>
+                                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" id="searchWord" name="keyWord">
+                                </li>
+                                <li>
+                                    <button class="btn btn-outline-success" type="submit">Search</button>
+                                </li>
                                 @{
                                     if (jsonacc != null)
                                     {
@@ -58,9 +62,9 @@
                                                 <li><a class="dropdown-item" href="/order/ViewOrderByAccountId?id=@account.Userid">Xem hóa đơn</a></li>
                                                 <li><a class="dropdown-item" href="/account/updateaccount?id=@account.Userid">Đổi thông tin</a></li>
                                                 @if (account.Isadmin)
-                                                                                            {
-                                                <li><a class="dropdown-item" href="/admin/index">Quản lý</a></li>
-                                                                                            }
+                                                {
+                                                    <li><a class="dropdown-item" href="/admin/index">Quản lý</a></li>
+                                                }
                                             </ul>
                                         </li>
                                     }
@@ -71,7 +75,8 @@
                                         </li>
                                     }
                                 }
-                        </ul>
+                            </ul>
+                        </form>
 
                     </div>
                 </div>
