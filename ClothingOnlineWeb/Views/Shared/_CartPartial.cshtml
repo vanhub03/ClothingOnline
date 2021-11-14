@@ -11,7 +11,7 @@
         var cart = JsonConvert.DeserializeObject<List<Cart>>(jsoncart);
         <li class="nav-item dropdown">
                 <span class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Gio hang(@cart.Count)
+                    Giỏ hàng (@cart.Count)
                 </span>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                     @{
@@ -21,7 +21,7 @@
                             total += price;
                             <li><a class="dropdown-item" href="/product/getproductdetail?id=@item.product.Productid">@item.product.Productname (@item.quantity)</a></li>
                         }
-                        <li><a class="dropdown-item" href="/product/ViewCart">Thanh tien: @total</a></li>
+                        <li><a class="dropdown-item" href="/product/ViewCart">Thành tiền: @total</a></li>
                     }
                 </ul>   
             </li>

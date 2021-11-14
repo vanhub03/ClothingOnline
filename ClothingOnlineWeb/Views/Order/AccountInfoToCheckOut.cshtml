@@ -17,19 +17,19 @@
             total += price;
         }
         <form asp-controller="Order" asp-action="AddToOrderWithAccountInfor">
-            <label>Ten nguoi nhan: </label>
+            <label>Tên người nhận: </label>
             <input asp-for="Customername" class="form-control" value="@account.Username" disabled />
-            <label>So dien thoai: </label>
+            <label>Số điện thoại: </label>
             <input asp-for="Phone" class="form-control" value="@account.Phone" disabled />
-            <label>Dia chi: </label>
+            <label>Địa chỉ: </label>
             <input asp-for="Address" class="form-control" value="@account.Address" disabled />
-            <label>Tong so tien phai thanh toan: </label>
+            <label>Tổng số tiền phải thanh toán: </label>
             <input asp-for="Totalprice" class="form-control" value="@total" disabled />
             <input type="submit" class="btn btn-success" value="Order" />
         </form>
     }
     else
     {
-        <h1>Ban chua co san pham nao trong gio hang</h1>
+        <h1>Bạn chưa có sản phẩm nào trong giỏ hàng</h1>
     }
 }
