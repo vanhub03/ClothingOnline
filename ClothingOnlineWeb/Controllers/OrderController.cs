@@ -128,6 +128,7 @@ namespace ClothingOnlineWeb.Controllers
                     order.OrderDetails.Add(orderdetail);
                 }
             }
+            orders.Reverse();
             return View(orders);
         }
     }
