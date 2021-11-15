@@ -7,6 +7,13 @@
 @{
     var session = HttpContextAccessor.HttpContext.Session;
     string jsoncart = session.GetString("accountSession");
+    Page pager = new Page();
+    int pageNo = 0;
+    if(ViewBag.Pager != null)
+    {
+        pager = ViewBag.Pager;
+        pageNo = pager.CurrentPage;
+    }
 }
 <head>
     <link id="u-theme-google-font" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i|Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i">
@@ -16,8 +23,9 @@
 </head>
 <body style="background-color:#f1f2f7">
     <div class="container bootdey">
-        
+
         <div class="px-4 px-lg-5 mt-5 row gx-4 gx-lg-5 row-cols-xl-4 justify-content-center">
+
             @{ foreach (var p in Model)
                 {
                     <div class="col mb-5">
@@ -50,6 +58,33 @@
                 }
             }
         </div>
+
+
+        @if (pager.TotalPages > 0)
+        {
+    <ul class="pagination justify-content-end">
+        @for (var pge = pager.StartPage; pge <= pager.EndPage; pge++)
+        {
+
+            <li class="page-item @(pge==pager.CurrentPage?"active":"")">
+                <a class="page-link" asp-controller="Product" asp-action="ListProduct" asp-route-pg="@pge">@pge</a>
+            </li>
+        }
+        @if (pager.CurrentPage < pager.TotalPages)
+        {
+            <li class="page-item">
+                <a class="page-link" asp-controller="Product" asp-action="ListProduct" asp-route-pg="@(pager.CurrentPage + 1)">Next</a>
+            </li>
+            <li>
+                <a class="page-link" asp-controller="Product" asp-action="ListProduct" asp-route-pg="@(pager.TotalPages)">Last</a>
+            </li>
+        }
+    </ul>
+           
+        }
+
+
+
     </div>
 </body>
 <style type="text/css">

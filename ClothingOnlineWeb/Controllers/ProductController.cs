@@ -14,7 +14,7 @@ namespace ClothingOnlineWeb.Controllers
     {
         public const string CARTKEY = "cart";
         ProjectPRN211Context context = new ProjectPRN211Context();
-        public IActionResult ListProduct()
+        public IActionResult ListProduct(int pg=1)
         {
             var products = context.Products.Where(p => p.Enable == true).ToList();
             foreach(var p in products)
@@ -25,7 +25,17 @@ namespace ClothingOnlineWeb.Controllers
                     p.Images.Add(i);
                 }
             }
-            return View(products);
+            const int pageSize = 10;
+            if (pg < 1)
+                pg = 1;
+
+            int rescCount = products.Count();
+            var pager = new Models.Page(rescCount, pg, pageSize);
+            int recSkip = (pg - 1) * pageSize;
+            var data = products.Skip(recSkip).Take(pager.PageSize).ToList();
+            this.ViewBag.Pager = pager;
+
+            return View(data);
         }
         public IActionResult getProductDetail(int id)
         {
