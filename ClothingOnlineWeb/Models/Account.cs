@@ -20,7 +20,7 @@ namespace ClothingOnlineWeb.Models
         public string Username { get; set; }
 
         [Required]
-        [RegularExpression(@"^ (?=.*[a - z])(?=.*[A - Z])(?=.*\d)[a - zA - Z\d]{8,}$/i",
+        [RegularExpression(@"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$",
             ErrorMessage = "Minimum 8 characters, at least one uppercase letter, one lowercase letter and one number")]
         public string Password { get; set; }
 
@@ -28,11 +28,11 @@ namespace ClothingOnlineWeb.Models
         public string Address { get; set; }
 
         [Required]
-        [RegularExpression(@"/^\d{10}$/i", ErrorMessage = "Phone must be 10 digits")]
+        [RegularExpression(@"^\d{10}$", ErrorMessage = "Phone must be 10 digits")]
         public string Phone { get; set; }
 
         [Required]
-        [RegularExpression(@"/ ^\w + ([\.-] ?\w +)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/i", 
+        [RegularExpression(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$", 
             ErrorMessage = "Invalid Email Format")]
         public string Email { get; set; }
         public bool Isadmin { get; set; }
