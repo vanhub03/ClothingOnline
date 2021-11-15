@@ -6,7 +6,7 @@
     ProjectPRN211Context context = new ProjectPRN211Context();
     var categories = context.Categories.ToList();
 
- }
+}
 
 
 <!DOCTYPE html>
@@ -117,7 +117,7 @@
                 </nav>
                 <!-- End of Topbar -->
                 <!-- Begin Page Content -->
-                <div class="text-center mt-5 container-fluid">
+                <div class="mt-5 container-fluid">
                     <form style="margin: auto;" asp-controller="Admin" asp-action="ClickEditProduct" method="post" enctype="multipart/form-data">
                         <h1 class="h3 mb-3 font-weigh-normal">Edit Product</h1><br />
                         <div class="row">
@@ -139,7 +139,7 @@
                                     </div>
                                     <div class="col-7">
                                         <input type="text" asp-for="Price" placeholder="Giá Sản Phẩm" class="form-control" required autofocus />
-                                        <span asp-validation-for="Price"></span>
+                                        <span asp-validation-for="Price" class="text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="row mt-3">
@@ -148,7 +148,7 @@
                                     </div>
                                     <div class="col-7">
                                         <input type="text" asp-for="Description" placeholder="Giới Thiệu" class="form-control" required autofocus />
-                                        <span asp-validation-for="Description"></span>
+                                        <span asp-validation-for="Description" class="text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="row mt-3">
@@ -157,52 +157,49 @@
                                     </div>
                                     <div class="col-7">
                                         <input type="number" asp-for="Unitinstock" placeholder="Số Hàng còn lại" class="form-control" required autofocus />
-                                        <span asp-validation-for="Unitinstock"></span>
+                                        <span asp-validation-for="Unitinstock" class="text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="row mt-3">
                                     <div class="col-3 mt-2">
                                         Chọn danh mục cho sản phẩm:
                                     </div>
-                                    <select name="categoryid" asp-for="Categoryid">
-                                        @{ foreach (var i in categories)
-                                            {
+                                    <div class="col-7">
+                                        <select class="form-control" name="categoryid" asp-for="Categoryid">
+                                            @{ foreach (var i in categories)
+                                                {
 
-                                                <option value="@i.Categoryid">@i.Categoryname</option>
+                                                    <option value="@i.Categoryid">@i.Categoryname</option>
+                                                }
                                             }
-                                        }
-
-                                    </select>
-
+                                        </select>
+                                    </div>
                                 </div>
                                 <div class="row mt-3">
                                     <div class="col-3 mt-2">
                                         List Ảnh:
-
+                                    </div>
+                                    <div class="col-7">
+                                        @{ foreach (var i in Model.Images)
+                                            {
+                                                <img class="card-img-top" src="~/Images/@i.Imagelink" alt="loi" />
+                                            }
+                                        }
                                     </div>
 
-                                    @{ foreach (var i in Model.Images)
-                                        {
-                                            <img class="card-img-top" src="~/Images/@i.Imagelink" alt="loi" />
-                                        }
-                                    }
 
                                 </div>
                                 <div class="row mt-3">
                                     <div class="col-3 mt-2">
                                         Chọn ảnh:
-
                                     </div>
-                                    <input type="file" asp-for="Images" name="imageFile" class="form-control" autofocus accept="image/*" multiple/>
-
+                                    <div class="col-7">
+                                        <input type="file" asp-for="Images" name="imageFile" class="form-control" autofocus accept="image/*" multiple />
+                                    </div>
                                 </div>
-
-
                             </div>
                             <div class="col-2"></div>
                         </div>
-
-
                         <div class="mt-4" style="justify-content:center; display:flex">
                             <button class="btn btn-lg btn-primary" style="" type="submit">Edit</button>
                         </div>
