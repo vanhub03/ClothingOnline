@@ -15,16 +15,16 @@
             total += price;
         }
     <form asp-controller="Order" asp-action="addtoorder">
-        <label>Tên người nhận: </label>
+        <div>Tên người nhận: </div>
         <input asp-for="Customername" class="form-control" required autofocus />
         <span asp-validation-for="Customername" class="text-danger"></span>
-        <label>Số điện thoại: </label>
+        <div>Số điện thoại: </div>
         <input asp-for="Phone" class="form-control" required autofocus />
         <span asp-validation-for="Phone" class="text-danger"></span>
-        <label>Địa chỉ: </label>
+        <div>Địa chỉ: </div>
         <input asp-for="Address" class="form-control" required autofocus />
         <span asp-validation-for="Address" class="text-danger"></span>
-        <label>Tổng số tiền phải thanh toán: </label>
+        <div>Tổng số tiền phải thanh toán: </div>
         <input asp-for="Totalprice" class="form-control" value="@total" disabled />
         <input type="submit" class="btn btn-success" value="Order" />
     </form>

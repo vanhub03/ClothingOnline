@@ -116,7 +116,7 @@
                 </nav>
                 <!-- End of Topbar -->
                 <!-- Begin Page Content -->
-                <div class="text-center mt-5 container-fluid">
+                <div class="mt-5 container-fluid">
                     <form style="margin: auto;" asp-controller="Admin" asp-action="AddProduct" method="post" enctype="multipart/form-data">
                         <h1 class="h3 mb-3 font-weigh-normal">Add Product</h1><br />
                         <div class="row">
@@ -137,7 +137,7 @@
                                     </div>
                                     <div class="col-7">
                                         <input type="text" asp-for="Price" placeholder="Giá Sản Phẩm" class="form-control" required autofocus />
-                                        <span asp-validation-for="Price"></span>
+                                        <span asp-validation-for="Price" class="text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="row mt-3">
@@ -146,7 +146,7 @@
                                     </div>
                                     <div class="col-7">
                                         <input type="text" asp-for="Description" placeholder="Giới Thiệu" class="form-control" required autofocus />
-                                        <span asp-validation-for="Description"></span>
+                                        <span asp-validation-for="Description" class="text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="row mt-3">
@@ -155,29 +155,33 @@
                                     </div>
                                     <div class="col-7">
                                         <input type="number" asp-for="Unitinstock" placeholder="Số Hàng còn lại" class="form-control" required autofocus />
-                                        <span asp-validation-for="Unitinstock"></span>
+                                        <span asp-validation-for="Unitinstock" class="text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="row mt-3">
                                     <div class="col-3 mt-2">
                                         Chọn danh mục cho sản phẩm:
                                     </div>
-                                    <select name="categoryid">
-                                        @{ foreach (var i in categories)
-                                            {
+                                    <div class="col-7">
+                                        <select class="form-control" name="categoryid">
+                                            @{ foreach (var i in categories)
+                                                {
 
-                                                <option value="@i.Categoryid">@i.Categoryname</option>
+                                                    <option value="@i.Categoryid">@i.Categoryname</option>
+                                                }
                                             }
-                                        }
 
-                                    </select>
-
+                                        </select>
+                                    </div>
                                 </div>
                                 <div class="row mt-3">
                                     <div class="col-3 mt-2">
                                         Chọn ảnh:
                                     </div>
-                                    <input type="file" asp-for="Images" name="imageFile" class="form-control" required autofocus accept="image/*" multiple />
+                                    <div class="col-7">
+                                        <input type="file" asp-for="Images" name="imageFile" class="form-control" required autofocus accept="image/*" multiple />
+                                    </div>
+                                    
 
                                 </div>
 

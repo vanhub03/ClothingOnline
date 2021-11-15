@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 #nullable disable
 
@@ -14,9 +15,21 @@ namespace ClothingOnlineWeb.Models
         }
 
         public int Productid { get; set; }
+
+        [Required]
         public string Productname { get; set; }
+
+        [Required]
+        [RegularExpression(@"^([1-9]+[0]{3})$/i",
+            ErrorMessage = "Price format: xxx000")]
         public double Price { get; set; }
+
+        [Required]
+        [StringLength(500, ErrorMessage = "Description length can't be more than 500 characters")]
         public string Description { get; set; }
+
+        [Required]  
+        [Range(0, 100)]
         public int Unitinstock { get; set; }
         public bool Enable { get; set; }
         public int Categoryid { get; set; }
