@@ -166,6 +166,10 @@
                                                 {
                                                     <a href="/admin/ConfirmOrder?id=@p.Orderid" class="btn btn-danger">Xác nhận</a>
                                                 }
+                                                @if (p.Status == 3)
+                                                {
+                                                    <a href="/admin/ConfirmOrder?id=@p.Orderid" class="btn btn-warning">Xác Nhận Đã Giao Hàng</a>
+                                                }
                                             </td>
                                             </tr>
                                         }

@@ -112,21 +112,45 @@ namespace ClothingOnlineWeb.Controllers
         public IActionResult ConfirmOrder(int id)
         {
             var order = context.Orders.Find(id);
-            order.Status = 3;
-            var orderdetails = context.OrderDetails.Where(o => o.OrderId == order.Orderid).ToList();
-            foreach (var orderdetail in orderdetails)
-            {
-                var product = context.Products.Find(orderdetail.Productid);
-                orderdetail.Product = product;
-                product.Unitinstock = product.Unitinstock - orderdetail.Quantity;
-                if (product.Unitinstock <= 0)
+            if (order.Status == 2) { 
+                order.Status = 3;
+                var orderdetails = context.OrderDetails.Where(o => o.OrderId == order.Orderid).ToList();
+                foreach (var orderdetail in orderdetails)
                 {
-                    product.Enable = false;
+                    var product = context.Products.Find(orderdetail.Productid);
+                    orderdetail.Product = product;
+                    product.Unitinstock = product.Unitinstock - orderdetail.Quantity;
+                    if (product.Unitinstock <= 0)
+                    {
+                        product.Enable = false;
+                    }
+                    context.SaveChanges();
                 }
-                context.SaveChanges();
+
             }
+            else { 
+                if(order.Status == 3)
+                {
+                    order.Status = 1;
+                    var orderdetails = context.OrderDetails.Where(o => o.OrderId == order.Orderid).ToList();
+                    foreach (var orderdetail in orderdetails)
+                    {
+                        var product = context.Products.Find(orderdetail.Productid);
+                        orderdetail.Product = product;
+                        product.Unitinstock = product.Unitinstock - orderdetail.Quantity;
+                        if (product.Unitinstock <= 0)
+                        {
+                            product.Enable = false;
+                        }
+                        context.SaveChanges();
+                    }
+                }
+            }
+           
             return RedirectToAction("Order", "Admin");
         }
+
+
 
         [HttpGet]
         public IActionResult AddAccount()
